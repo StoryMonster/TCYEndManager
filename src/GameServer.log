@@ -1,0 +1,54 @@
+09:14:41  xygsvr.cpp          214:  license file path: 
+09:14:41  uwlwork.cpp          37:  number of processors: 4
+09:14:41  xygsvr.cpp         1765:  timer thread started. id = 11160
+09:14:41  xygsvr.cpp         1820:  timer_ex thread started. id = 1020
+09:14:41  xygsvr.cpp         2271:  message thread started. id = 7868
+09:14:41  xygsvr.cpp         1382:  send thread started. id = 9192
+09:14:41  xygsvr.cpp         1445:  connect thread started. id = 13880
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 6024
+09:14:41  uwlwork.cpp          88:  current worker threads count = 1
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 5132
+09:14:41  uwlwork.cpp          88:  current worker threads count = 2
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 3276
+09:14:41  uwlwork.cpp          88:  current worker threads count = 3
+09:14:41  tciocp.cpp         3301:  buffer size = 4096 (page size = 4096)
+09:14:41  tciocp.cpp         3303:  number of processors: 4
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 4752
+09:14:41  uwlwork.cpp          88:  current worker threads count = 4
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 8200
+09:14:41  uwlwork.cpp          88:  current worker threads count = 5
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 14908
+09:14:41  uwlwork.cpp          88:  current worker threads count = 6
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 12568
+09:14:41  uwlwork.cpp          88:  current worker threads count = 7
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 10156
+09:14:41  uwlwork.cpp          88:  current worker threads count = 8
+09:14:41  tciocp.cpp         1789:  socket thread started. id = 7588
+09:14:41  tciocp.cpp         1792:  current socket threads count = 1
+09:14:41  tciocp.cpp         3397:  total client connects to server = 1
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 2, serialno = 1, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 1, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 2, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 3, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 4, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 5, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 6, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 7, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 8, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 9, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 10, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 11, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 12, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 13, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 14, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 3, serialno = 15, socket = 1272
+09:14:41  tciocp.cpp         3516:  msgtype = 2, sessionid = 4, serialno = 1, socket = 1272
+09:14:41  uwlwork.cpp          37:  number of processors: 4
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 9608
+09:14:41  uwlwork.cpp          88:  current worker threads count = 1
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 2588
+09:14:41  tciocp.cpp          713:  buffer size = 4096 (page size = 4096)
+09:14:41  uwlwork.cpp          88:  current worker threads count = 2
+09:14:41  tciocp.cpp          715:  number of processors: 4
+09:14:41  uwlwork.cpp          85:  worker thread started. id = 4844
+09:14:41  uwlwork.c

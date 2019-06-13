@@ -1,0 +1,59 @@
+09:14:34  server.cpp          201:  client id=104034617!
+09:14:34  uwlwork.cpp          37:  number of processors: 4
+09:14:34  server.cpp          811:  send thread started. id = 1616
+09:14:34  server.cpp          875:  connect thread started. id = 1600
+09:14:34  tciocp.cpp         3301:  buffer size = 4096 (page size = 4096)
+09:14:34  tciocp.cpp         3303:  number of processors: 4
+09:14:34  tciocp.cpp         1789:  socket thread started. id = 13216
+09:14:34  tciocp.cpp         1792:  current socket threads count = 1
+09:14:34  tciocp.cpp         3397:  total client connects to server = 1
+09:14:34  server.cpp          694:  hub server IP: 192.168.1.7
+09:14:34  uwlwork.cpp          37:  number of processors: 4
+09:14:34  server.cpp          811:  send thread started. id = 14396
+09:14:34  server.cpp          875:  connect thread started. id = 10040
+09:14:34  tciocp.cpp         3301:  buffer size = 4096 (page size = 4096)
+09:14:34  tciocp.cpp         3303:  number of processors: 4
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 4032
+09:14:34  uwlwork.cpp          88:  current worker threads count = 1
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 5340
+09:14:34  uwlwork.cpp          88:  current worker threads count = 2
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 5064
+09:14:34  uwlwork.cpp          88:  current worker threads count = 3
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 13076
+09:14:34  uwlwork.cpp          88:  current worker threads count = 4
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 13436
+09:14:34  uwlwork.cpp          88:  current worker threads count = 5
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 5240
+09:14:34  uwlwork.cpp          88:  current worker threads count = 6
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 10016
+09:14:34  uwlwork.cpp          88:  current worker threads count = 7
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 7988
+09:14:34  uwlwork.cpp          88:  current worker threads count = 8
+09:14:34  tciocp.cpp         1789:  socket thread started. id = 4132
+09:14:34  tciocp.cpp         1792:  current socket threads count = 1
+09:14:34  tciocp.cpp         3397:  total client connects to server = 1
+09:14:34  server.cpp          737:  Connect to HUB server OK.
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 5004
+09:14:34  uwlwork.cpp          88:  current worker threads count = 1
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 11676
+09:14:34  uwlwork.cpp          88:  current worker threads count = 2
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 9744
+09:14:34  uwlwork.cpp          88:  current worker threads count = 3
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 12020
+09:14:34  uwlwork.cpp          88:  current worker threads count = 4
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 7320
+09:14:34  uwlwork.cpp          88:  current worker threads count = 5
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 7764
+09:14:34  uwlwork.cpp          88:  current worker threads count = 6
+09:14:34  uwlwork.cpp          85:  worker thread started. id = 15220
+09:14:34  uwlwork.cpp          88:  current worker threads count = 7
+09:14:34  tciocp.cpp         3516:  msgtype = 2, sessionid = 2, serialno = 1, socket = 1120
+09:14:35  uwlwork.cpp          85:  worker thread started. id = 9176
+09:14:35  uwlwork.cpp          88:  current worker threads count = 8
+09:14:35  uwlwork.cpp          37:  number of processors: 4
+09:14:35  server.cpp          811:  send thread started. id = 14232
+09:14:35  server.cpp          875:  connect thread started. id = 6756
+09:14:35  server.cpp          811:  send thread started. id = 6096
+09:14:35  tciocp.cpp         3301:  buffer size = 4096 (page size = 4096)
+09:14:35  tciocp.cpp         3303:  number of processors: 4
+09:14:35  server.cpp          875:  connect thread started. id = 1

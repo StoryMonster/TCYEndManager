@@ -1,0 +1,10 @@
+
+CHUNK_SERVER = "chunk server"
+ASSIST_SERVER = "assist server"
+ASSIST_PROXY_SERVER = "assist proxy server"
+GAME_SERVER = "game server"
+GAME_PROXY_SERVER = "game proxy server"
+ROOM_SERVER = "room server"
+ROOM_PROXY_SERVER = "room proxy server"
+
+SERVER_NAMES = [CHUNK_SERVER, ASSIST_SERVER, ASSIST_PROXY_SERVER, GAME_SERVER, GAME_PROXY_SERVER, ROOM_SERVER, ROOM_PROXY_SERVER]
