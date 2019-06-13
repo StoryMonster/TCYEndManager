@@ -3,6 +3,19 @@ from tkinter import Tk, LEFT, RIGHT, BOTH, X, TOP, W, E, N, S
 from .output_box import OutputBox
 from .control_btn import ControlButton
 
+def getExpectCols(servers, clients):
+    endNumExpectWindow = 1          ## reserve for common window
+    for server in servers:
+        if servers[server]["isWindowExpected"] == "yes":
+            endNumExpectWindow += 1
+    for client in clients:
+        if clients[client]["isWindowExpected"] == "yes":
+            endNumExpectWindow += 1
+    if endNumExpectWindow <= 3: return endNumExpectWindow
+    else:
+        half = endNumExpectWindow/2
+        if half == int(half): return int(half)
+        else: return int(half) + 1
 
 class MainWindow(Tk):
     def __init__(self, servers, clients):
@@ -14,6 +27,7 @@ class MainWindow(Tk):
         self.clientCtrlBtns = {}
         self.logAreas = {}
         self.controler = None
+        self.commonWindow = None
         self.outputFrame = Frame(self)
         self.controlFrame = Frame(self)
         self._deployControlFrame(self.controlFrame)
@@ -53,23 +67,26 @@ class MainWindow(Tk):
             self.clientCtrlBtns[clientName].pack(side=TOP, fill=X, expand=1)
     
     def _deployDisplayFrame(self, frame):
-        row, col = 0, 0
-        for serverName in self.servers:
-            if serverName in self.logAreas: continue
-            self.logAreas[serverName] = OutputBox(frame, serverName)
-            self.logAreas[serverName].grid(row=row, column=col)
-            col += 1
-            if col > 2:
-                row += 1
-                col = 0
-        for clientName in self.clients:
-            if clientName in self.logAreas: continue
-            self.logAreas[clientName] = OutputBox(frame, clientName)
-            self.logAreas[clientName].grid(row=row, column=col)
-            col += 1
-            if col > 2:
-                row += 1
-                col = 0
+        col = getExpectCols(self.servers, self.clients)
+        i, j = 0, 0
+        self.commonWindow = OutputBox(frame, "Common Window")
+        self.commonWindow.grid(row=i, column=j)
+        for server in self.servers:
+            if server in self.logAreas or self.servers[server]["isWindowExpected"] == "no": continue
+            j += 1
+            if j == col:
+                i += 1
+                j = 0
+            self.logAreas[server] = OutputBox(frame, server)
+            self.logAreas[server].grid(row=i, column=j)
+        for client in self.clients:
+            if client in self.logAreas or self.clients[client]["isWindowExpected"] == "no": continue
+            j += 1
+            if j == col:
+                i += 1
+                j = 0
+            self.logAreas[client] = OutputBox(frame, client)
+            self.logAreas[client].grid(row=i, column=j)
     
     def _onMainWindowClose(self):
         self.controler.close()

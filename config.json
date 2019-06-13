@@ -6,36 +6,40 @@
             "exefile": "gamechunksvr.exe",
             "configfile": "LaGpChunkSvr.ini",
             "logfile": "ChunkServer.log",
-            "comments": ["启动chunk服务器之前，需要先将其配置文件中的clientid改为自己的clientid",
-                         "务必确保防火墙已经关闭"]
+            "comments": [],
+            "isWindowExpected": "yes"
         },
         "ASSIST SERVER": {
             "name": "assist server",
             "workdir": "D:/DGT_Server/gameassitsvr/Debug",
             "exefile": "gameassitsvr.exe",
             "configfile": "LaGpAssitSvr.ini",
-            "logfile": "AssistServer.log"
+            "logfile": "AssistServer.log",
+            "isWindowExpected": "yes"
         },
         "ASSIST PROXY SERVER": {
             "name": "assist proxy server",
             "workdir": "D:/DGT_Server/mpsvr/debug/",
             "exefile": "assistmpsvr.exe",
             "configfile": "assistmpsvr.ini",
-            "logfile": "AssistProxyServer.log"
+            "logfile": "AssistProxyServer.log",
+            "isWindowExpected": "no"
         },
         "GAME SERVER": {
             "name": "game server",
             "workdir": "D:/DGT_Server/gamesvr/Debug/",
             "exefile": "lagpsvr.exe",
             "configfile": "lagpsvr.ini",
-            "logfile": "GameServer.log"
+            "logfile": "GameServer.log",
+            "isWindowExpected": "yes"
         },
         "GAME PROXY SERVER": {
             "name": "game proxy server",
             "workdir": "D:/DGT_Server/mpsvr/debug/",
             "exefile": "gamempsvr.exe",
             "configfile": "gamempsvr.ini",
-            "logfile": "GameProxyServer.log"
+            "logfile": "GameProxyServer.log",
+            "isWindowExpected": "no"
         },
         "ROOM SERVER": {
             "name": "room server",
@@ -43,14 +47,16 @@
             "exefile": "roomsvrlagpD.exe",
             "configfile": "RoomSvr.ini",
             "logfile": "RoomServer.log",
-            "comments": ["启动房间服务器，必须要有license.dat处于同级目录"]
+            "comments": [],
+            "isWindowExpected": "yes"
         },
         "ROOM PROXY SERVER": {
             "name": "room proxy server",
             "workdir": "D:/roommpsvr",
             "exefile": "roommpsvrlagp.exe",
             "configfile": "roommpsvr.ini",
-            "logfile": "RoomProxyServer.log"
+            "logfile": "RoomProxyServer.log",
+            "isWindowExpected": "no"
         }
     },
     "clients": {
@@ -61,7 +67,8 @@
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
             "logfile": "client1.log",
-            "script": "D:/DGT"
+            "script": "D:/DGT",
+            "isWindowExpected": "no"
         },
         "CLIENT2": {
             "id": "",
@@ -70,7 +77,8 @@
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
             "logfile": "client2.log",
-            "script": "D:/DGT"
+            "script": "D:/DGT",
+            "isWindowExpected": "no"
         }
     }
 }
