@@ -33,7 +33,7 @@ class ConcreteServerControler(object):
         for line in lines:
             if line.strip() == "": continue
             self.println(line.rstrip())
-    
+
     def stop(self):
         self.println(f"stop {self.name}")
         if self.proc is not None:

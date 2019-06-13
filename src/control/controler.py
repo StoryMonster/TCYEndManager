@@ -2,19 +2,15 @@ import os
 import subprocess
 import time
 import threading
-from model.server_names import *
-from model.server_contexts import serverContexts
-from model.client_names import *
-from model.client_contexts import clientContexts
 from .concrete_server_controler import ConcreteServerControler
 from .concrete_client_controler import ConcreteClientControler
 
 
 class Controler(object):
-    def __init__(self):
+    def __init__(self, servers, clients):
         self.view = None
-        self.serverContexts = serverContexts
-        self.clientContexts = clientContexts
+        self.servers = servers
+        self.clients = clients
         self.controlers = {}
         self.syncLogThread = threading.Thread(target=self._syncLogBetweenScreenAndFile)
 
@@ -22,11 +18,11 @@ class Controler(object):
         self.close()
     
     def close(self):
-        for client in CLIENT_NAMES:
-            self.closeClient(client)
-        for server in SERVER_NAMES:
-            self.closeServer(server)
-    
+        for client in self.clients:
+            self.closeControler(client)
+        for server in self.servers:
+            self.closeControler(server)
+
     def _syncLogBetweenScreenAndFile(self):
         while True:
             for controler in self.controlers:
@@ -36,32 +32,27 @@ class Controler(object):
 
     def loadView(self, view):
         self.view = view
-        for serverName in SERVER_NAMES:
-            self.controlers[serverName] = ConcreteServerControler(serverName, self.serverContexts[serverName], view.logAreas[serverName])
-        for clientName in CLIENT_NAMES:
-            self.controlers[clientName] = ConcreteClientControler(clientName, self.clientContexts[clientName], view.logAreas[clientName])
+        for server in self.servers:
+            self.controlers[server] = ConcreteServerControler(server, self.servers[server], view.logAreas[server])
+        for client in self.clients:
+            self.controlers[client] = ConcreteClientControler(client, self.clients[client], view.logAreas[client])
         self.syncLogThread.start()
-
-    def closeServer(self, serverName):
-        if self.controlers[serverName] is not None:
-            self.controlers[serverName].close()
-            self.controlers[serverName] = None
-
-    def closeClient(self, clientName):
-        if self.controlers[clientName] is not None:
-            self.controlers[clientName].close()
-            self.controlers[clientName] = None
+    
+    def closeControler(self, controlerName):
+        if self.controlers[controlerName] is not None:
+            self.controlers[controlerName].close()
+            self.controlers[controlerName] = None
 
     def onClickServerButton(self, serverName, isExpectToStart):
-        if (serverName not in SERVER_NAMES) or (self.controlers[serverName] is None): return
+        if (serverName not in self.servers) or (self.controlers[serverName] is None): return
         if isExpectToStart: self.controlers[serverName].run()
         else: self.controlers[serverName].stop()
 
     def onClickClientButton(self, clientName, isExpectToStart):
-        if (clientName not in CLIENT_NAMES) or (self.controlers[clientName] is None): return
+        if (clientName not in self.clients) or (self.controlers[clientName] is None): return
         if isExpectToStart: self.controlers[clientName].run()
         else: self.controlers[clientName].stop()
-    
+
     def onMainWindowClose(self):
         self.close()
 
