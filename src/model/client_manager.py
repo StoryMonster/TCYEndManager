@@ -1,19 +1,23 @@
 import os
 import subprocess
 import shutil
+from .file_reader import FileReader
+from .file_writer import FileWriter
 
-class ConcreteClientControler(object):
+class ClientManager(object):
     def __init__(self, name, context, logWnd):
         self.name = name
         self.context = context
         self.logWnd = logWnd
-        self.fileWriter = open(context["logfile"], "w")
-        self.fileReader = open(context["logfile"], "r")
-        self.readedLength = 0
+        self.fileWriter = None
+        self.fileReader = None
+        try:
+            self.fileWriter = FileWriter(context["logfile"])
+            self.fileReader = FileReader(context["logfile"])
+        except IOError as e:
+            self.logWnd.write(str(e))
+            raise Exception(f"process {self.name} cannot start!")
         self.proc = None
-
-    def fileno(self):
-        return self.fileWriter.fileno()
 
     def __exit__(self, *args):
         self.close()
@@ -33,19 +37,15 @@ class ConcreteClientControler(object):
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                pass
+                self.println(f"The process {self.name} is not killed!")
             self.proc = None
 
     def println(self, line):
         self.logWnd.writeline(line)
 
-    def syncLogFromFile(self):
+    def syncLogToScreenFromFile(self):
         if self.fileReader is None: return
-        data = self.fileReader.read()
-        lines = data.split("\n")
-        for line in lines:
-            if line.strip() == "": continue
-            self.println(line.rstrip())
+        self.logWnd.writelines(self.fileReader.readlines())
 
     def run(self):
         workdir = self.context["workdir"]
@@ -61,6 +61,6 @@ class ConcreteClientControler(object):
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
         scriptPath = self.context["script"]
-        self.proc = subprocess.Popen(f"{simulator} {scriptPath}", stdout=self, stderr=self, creationflags=subprocess.CREATE_NO_WINDOW)
+        self.proc = subprocess.Popen(f"{simulator} {scriptPath}", stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
         self.println(f"{self.name} is running")

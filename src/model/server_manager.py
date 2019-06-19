@@ -1,21 +1,21 @@
 import os
 import subprocess
+from .file_reader import FileReader
+from .file_writer import FileWriter
 
-class ConcreteServerControler(object):
+
+class ServerManager(object):
     def __init__(self, name, context, logWnd):
         self.name = name
         self.context = context
         self.logWnd = logWnd
-        self.fileWriter = open(context["logfile"], "w")
-        self.fileReader = open(context["logfile"], "r")
-        self.readedLength = 0
+        self.fileWriter = FileWriter(context["logfile"])
+        self.fileReader = FileReader(context["logfile"])
         self.proc = None
+        self._printServerComments()
 
     def __exit__(self, *args):
         self.close()
-
-    def fileno(self):
-        return self.fileWriter.fileno()
 
     def close(self):
         self.stop()
@@ -26,13 +26,9 @@ class ConcreteServerControler(object):
             self.fileReader.close()
             self.fileReader = None
 
-    def syncLogFromFile(self):
+    def syncLogToScreenFromFile(self):
         if self.fileReader is None: return
-        data = self.fileReader.read()
-        lines = data.split("\n")
-        for line in lines:
-            if line.strip() == "": continue
-            self.println(line.rstrip())
+        self.logWnd.writelines(self.fileReader.readlines())
 
     def stop(self):
         self.println(f"stop {self.name}")
@@ -40,7 +36,7 @@ class ConcreteServerControler(object):
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                pass
+                self.println(f"The process {self.name} is not killed!")
             self.proc = None
 
     def println(self, line):
@@ -52,7 +48,6 @@ class ConcreteServerControler(object):
                 self.println(line)
 
     def run(self):
-        self._printServerComments()
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
             self.println(f"{workdir} is not exist")
@@ -63,6 +58,6 @@ class ConcreteServerControler(object):
         if (not os.path.exists(exename)) or (not os.path.exists(configFileName)):
             self.println(f"The {exename} not exist or config file {configFileName} not exist!")
             return
-        self.proc = subprocess.Popen(exename, stdout=self, stderr=self, creationflags=subprocess.CREATE_NO_WINDOW)
+        self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
         self.println(f"{exename} is running")

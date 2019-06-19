@@ -1,9 +1,7 @@
-import os
-import subprocess
 import time
 import threading
-from .concrete_server_controler import ConcreteServerControler
-from .concrete_client_controler import ConcreteClientControler
+from model.process_type import ProcessType
+from model.process_manager_factor import create_process_manager
 
 
 class Controler(object):
@@ -11,7 +9,7 @@ class Controler(object):
         self.view = None
         self.servers = servers
         self.clients = clients
-        self.controlers = {}
+        self.procManagers = {}
         self.isSyncLogExpected = True
         self.syncLogThread = threading.Thread(target=self._syncLogBetweenScreenAndFile)
 
@@ -19,45 +17,43 @@ class Controler(object):
         self.close()
     
     def close(self):
-        self.isSyncLogExpected = False
-        self.syncLogThread.join()
-        for client in self.clients:
-            self.closeControler(client)
-        for server in self.servers:
-            self.closeControler(server)
+        if self.syncLogThread.is_alive():
+            self.isSyncLogExpected = False
+            self.syncLogThread.join()
+        self.closeProcesses()
 
     def _syncLogBetweenScreenAndFile(self):
         while self.isSyncLogExpected:
-            for controler in self.controlers:
-                if self.controlers[controler] is None: continue
-                self.controlers[controler].syncLogFromFile()
+            for procName in self.procManagers:
+                if self.procManagers[procName] is None: continue
+                self.procManagers[procName].syncLogToScreenFromFile()
             time.sleep(0.5)
 
     def loadView(self, view):
         self.view = view
         for server in self.servers:
             winHandler = view.dispAreas[server] if server in view.dispAreas else view.commonWindow
-            self.controlers[server] = ConcreteServerControler(server, self.servers[server], winHandler)
+            self.procManagers[server] = create_process_manager(server, ProcessType.ServerProcess, self.servers[server], winHandler)
         for client in self.clients:
             winHandler = view.dispAreas[client] if client in view.dispAreas else view.commonWindow
-            self.controlers[client] = ConcreteClientControler(client, self.clients[client], winHandler)
+            self.procManagers[client] = create_process_manager(client, ProcessType.ClientProcess, self.clients[client], winHandler)
         self.syncLogThread.start()
     
-    def closeControler(self, name):
-        if self.controlers[name] is not None:
-            self.controlers[name].close()
-            self.controlers[name] = None
+    def closeProcesses(self, names=[]):
+        for name in names:
+            if (name in self.procManagers) and (self.procManagers[name] is not None):
+                self.procManagers[name].close()
+                self.procManagers[name] = None
 
     def onClickServerButton(self, serverName, isExpectToStart):
-        if (serverName not in self.servers) or (self.controlers[serverName] is None): return
-        if isExpectToStart: self.controlers[serverName].run()
-        else: self.controlers[serverName].stop()
+        if (serverName not in self.servers) or (self.procManagers[serverName] is None): return
+        if isExpectToStart: self.procManagers[serverName].run()
+        else: self.procManagers[serverName].stop()
 
     def onClickClientButton(self, clientName, isExpectToStart):
-        if (clientName not in self.clients) or (self.controlers[clientName] is None): return
-        if isExpectToStart: self.controlers[clientName].run()
-        else: self.controlers[clientName].stop()
+        if (clientName not in self.clients) or (self.procManagers[clientName] is None): return
+        if isExpectToStart: self.procManagers[clientName].run()
+        else: self.procManagers[clientName].stop()
 
     def onMainWindowClose(self):
         self.close()
-
