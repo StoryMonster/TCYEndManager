@@ -36,10 +36,10 @@ class Controler(object):
     def loadView(self, view):
         self.view = view
         for server in self.servers:
-            winHandler = view.logAreas[server] if server in view.logAreas else view.commonWindow
+            winHandler = view.dispAreas[server] if server in view.dispAreas else view.commonWindow
             self.controlers[server] = ConcreteServerControler(server, self.servers[server], winHandler)
         for client in self.clients:
-            winHandler = view.logAreas[client] if client in view.logAreas else view.commonWindow
+            winHandler = view.dispAreas[client] if client in view.dispAreas else view.commonWindow
             self.controlers[client] = ConcreteClientControler(client, self.clients[client], winHandler)
         self.syncLogThread.start()
     

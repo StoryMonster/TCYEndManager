@@ -79,6 +79,46 @@
             "logfile": "client2.log",
             "script": "D:/lagt",
             "isWindowExpected": "no"
+        },
+        "CLIENT3": {
+            "id": "",
+            "password": "",
+            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_3.ini",
+            "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
+            "workdir": "D:/CLIENT/Win32/runtime",
+            "logfile": "client3.log",
+            "script": "D:/lagt",
+            "isWindowExpected": "no"
+        },
+        "CLIENT4": {
+            "id": "",
+            "password": "",
+            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_4.ini",
+            "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
+            "workdir": "D:/CLIENT/Win32/runtime",
+            "logfile": "client4.log",
+            "script": "D:/lagt",
+            "isWindowExpected": "no"
+        },
+        "CLIENT5": {
+            "id": "",
+            "password": "",
+            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_5.ini",
+            "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
+            "workdir": "D:/CLIENT/Win32/runtime",
+            "logfile": "client5.log",
+            "script": "D:/lagt",
+            "isWindowExpected": "no"
+        },
+        "CLIENT6": {
+            "id": "",
+            "password": "",
+            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_6.ini",
+            "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
+            "workdir": "D:/CLIENT/Win32/runtime",
+            "logfile": "client6.log",
+            "script": "D:/lagt",
+            "isWindowExpected": "no"
         }
     }
 }
