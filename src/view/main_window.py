@@ -20,7 +20,7 @@ def getExpectCols(servers, clients):
 class MainWindow(Tk):
     def __init__(self, servers, clients):
         Tk.__init__(self)
-        self.title("同城游 终端管理工具")
+        self.title("同城游 管理工具")
         self.servers = servers
         self.clients = clients
         self.svrCtrlBtns = {}
@@ -65,29 +65,22 @@ class MainWindow(Tk):
             if clientName in self.clientCtrlBtns: continue
             self.clientCtrlBtns[clientName] = ControlButton(frame, clientName, "", None)
             self.clientCtrlBtns[clientName].pack(side=TOP, fill=X, expand=1)
-    
+
     def _deployDisplayFrame(self, frame):
-        col = getExpectCols(self.servers, self.clients)
-        i, j = 0, 0
-        self.commonWindow = OutputBox(frame, "Common Window")
-        self.commonWindow.grid(row=i, column=j)
+        counter = 0
         for server in self.servers:
             if server in self.logAreas or self.servers[server]["isWindowExpected"] == "no": continue
-            j += 1
-            if j == col:
-                i += 1
-                j = 0
             self.logAreas[server] = OutputBox(frame, server)
-            self.logAreas[server].grid(row=i, column=j)
+            self.logAreas[server].grid(row=int(counter/3), column=counter%3)
+            counter += 1
         for client in self.clients:
             if client in self.logAreas or self.clients[client]["isWindowExpected"] == "no": continue
-            j += 1
-            if j == col:
-                i += 1
-                j = 0
             self.logAreas[client] = OutputBox(frame, client)
-            self.logAreas[client].grid(row=i, column=j)
-    
+            self.logAreas[client].grid(row=int(counter/3), column=counter%3)
+            counter += 1
+        self.commonWindow = OutputBox(frame, "Common Window")
+        self.commonWindow.grid(row=int(counter/3), column=counter%3)
+
     def _onMainWindowClose(self):
         self.controler.close()
         self.destroy()
