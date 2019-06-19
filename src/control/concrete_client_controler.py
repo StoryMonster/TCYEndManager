@@ -11,7 +11,7 @@ class ConcreteClientControler(object):
         self.fileReader = open(context["logfile"], "r")
         self.readedLength = 0
         self.proc = None
-    
+
     def fileno(self):
         return self.fileWriter.fileno()
 
@@ -26,7 +26,7 @@ class ConcreteClientControler(object):
         if self.fileReader is not None:
             self.fileReader.close()
             self.fileReader = None
-    
+
     def stop(self):
         self.println(f"stop {self.name}")
         if self.proc is not None:
@@ -38,7 +38,7 @@ class ConcreteClientControler(object):
 
     def println(self, line):
         self.logWnd.writeline(line)
-    
+
     def syncLogFromFile(self):
         if self.fileReader is None: return
         data = self.fileReader.read()
@@ -46,7 +46,7 @@ class ConcreteClientControler(object):
         for line in lines:
             if line.strip() == "": continue
             self.println(line.rstrip())
-    
+
     def run(self):
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):

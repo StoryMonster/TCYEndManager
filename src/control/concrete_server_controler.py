@@ -13,7 +13,7 @@ class ConcreteServerControler(object):
 
     def __exit__(self, *args):
         self.close()
-    
+
     def fileno(self):
         return self.fileWriter.fileno()
 
@@ -25,7 +25,7 @@ class ConcreteServerControler(object):
         if self.fileReader is not None:
             self.fileReader.close()
             self.fileReader = None
-    
+
     def syncLogFromFile(self):
         if self.fileReader is None: return
         data = self.fileReader.read()
@@ -37,17 +37,20 @@ class ConcreteServerControler(object):
     def stop(self):
         self.println(f"stop {self.name}")
         if self.proc is not None:
-            os.kill(self.proc.pid, 9)
+            try:
+                os.kill(self.proc.pid, 9)
+            except PermissionError:
+                pass
             self.proc = None
 
     def println(self, line):
         self.logWnd.writeline(line)
-    
+
     def _printServerComments(self):
         if "comments" in self.context:
             for line in self.context["comments"]:
                 self.println(line)
-    
+
     def run(self):
         self._printServerComments()
         workdir = self.context["workdir"]

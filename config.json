@@ -2,24 +2,24 @@
     "servers": {
         "CHUNK SERVER": {
             "name": "chunk server",
-            "workdir": "D:/DGT_Server/gamechunksvr/Debug",
-            "exefile": "gamechunksvr.exe",
-            "configfile": "LaGpChunkSvr.ini",
+            "workdir": "D:/chunk_server_pc_mobile/lagtchunksvr/Debug",
+            "exefile": "LaGtChunkSvrDC.exe",
+            "configfile": "LaGtChunkSvr.ini",
             "logfile": "ChunkServer.log",
             "comments": [],
             "isWindowExpected": "yes"
         },
         "ASSIST SERVER": {
             "name": "assist server",
-            "workdir": "D:/DGT_Server/gameassitsvr/Debug",
-            "exefile": "gameassitsvr.exe",
-            "configfile": "LaGpAssitSvr.ini",
+            "workdir": "D:/chunk_server_pc_mobile/lagtassitsvr/Debug",
+            "exefile": "LaGtAssitSvrcd.exe",
+            "configfile": "LaGtAssitSvr.ini",
             "logfile": "AssistServer.log",
             "isWindowExpected": "yes"
         },
         "ASSIST PROXY SERVER": {
             "name": "assist proxy server",
-            "workdir": "D:/DGT_Server/mpsvr/debug/",
+            "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
             "exefile": "assistmpsvr.exe",
             "configfile": "assistmpsvr.ini",
             "logfile": "AssistProxyServer.log",
@@ -35,9 +35,9 @@
         },
         "GAME PROXY SERVER": {
             "name": "game proxy server",
-            "workdir": "D:/DGT_Server/mpsvr/debug/",
-            "exefile": "gamempsvr.exe",
-            "configfile": "gamempsvr.ini",
+            "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
+            "exefile": "lagtmpsvr.exe",
+            "configfile": "lagtmpsvr.ini",
             "logfile": "GameProxyServer.log",
             "isWindowExpected": "no"
         },
@@ -67,7 +67,7 @@
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
             "logfile": "client1.log",
-            "script": "D:/DGT",
+            "script": "D:/lagt",
             "isWindowExpected": "no"
         },
         "CLIENT2": {
@@ -77,7 +77,7 @@
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
             "logfile": "client2.log",
-            "script": "D:/DGT",
+            "script": "D:/lagt",
             "isWindowExpected": "no"
         }
     }
