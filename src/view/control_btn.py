@@ -9,7 +9,7 @@ class ControlButton(Frame):
         self.isRunningStatus = True
         self.btnText = StringVar()
         self._autoRotateButton()
-        self.btn = Button(self, textvariable=self.btnText, command=self._onClick)
+        self.btn = Button(self, textvariable=self.btnText, command=self._onClick, bd=4)
         self.btn.pack(fill=X)
         self.description = StringVar()
         self.description.set(description)

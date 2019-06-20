@@ -5,15 +5,15 @@ from .general_ctrl_btn import GeneralCtrlBtn
 
 class ControlPanel(Frame):
     def __init__(self, parent=None, servers={}, clients={}):
-        Frame.__init__(self, parent)
+        Frame.__init__(self, parent, bd=5)
         self.servers = servers
         self.clients = clients
         self.clientCtrlBtns = {}
         self.serverCtrlBtns = {}
         self.generalCtrlBtns = {}
-        self.serverCtrlPanel = Frame(self)
-        self.clientCtrlPanel = Frame(self)
-        self.generalCtrlPanel = Frame(self)
+        self.serverCtrlPanel = Frame(self, bd=3)
+        self.clientCtrlPanel = Frame(self, bd=3)
+        self.generalCtrlPanel = Frame(self, bd=3)
         self._deploy_server_control_panel(self.serverCtrlPanel)
         self._deploy_client_control_panel(self.clientCtrlPanel)
         self._deploy_general_control_panel(self.generalCtrlPanel)

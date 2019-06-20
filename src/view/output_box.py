@@ -3,7 +3,7 @@ from tkinter import HORIZONTAL, VERTICAL, BOTTOM, X, RIGHT, Y, BOTH, TOP
 
 class OutputBox(Frame):
     def __init__(self, parent=None, boxName=""):
-        Frame.__init__(self, parent)
+        Frame.__init__(self, parent, bg="grey")
         self.lbl = Label(self, text=boxName)
         self.xScrollarBar = Scrollbar(self, orient=HORIZONTAL)
         self.xScrollarBar.pack(side=BOTTOM, fill=X)
@@ -15,7 +15,6 @@ class OutputBox(Frame):
         self.lbl.pack(expand=1, fill=X, side=TOP)
         self.textArea.pack(expand=1, fill=BOTH, side=TOP)
         self.textArea.tag_configure("WARN_TEXT",background="blue", foreground="yellow")
-        #self.textArea.tag_configure("INFO_TEXT", background="blue", foreground="yellow")
         self.textArea.tag_configure("ERROR_TEXT", background="blue", foreground="red")
 
     def write(self, text):

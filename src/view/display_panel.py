@@ -4,7 +4,7 @@ from .output_box import OutputBox
 
 class DisplayPanel(Frame):
     def __init__(self, parent=None, servers={}, clients={}):
-        Frame.__init__(self, parent)
+        Frame.__init__(self, parent, bd=3, bg="grey")
         self.servers = servers
         self.clients = clients
         self.dispAreas = {}
