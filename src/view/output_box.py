@@ -1,19 +1,15 @@
-from tkinter import Text, Label, Scrollbar, Frame
+from tkinter import Label, Scrollbar, Frame, scrolledtext
 from tkinter import HORIZONTAL, VERTICAL, BOTTOM, X, RIGHT, Y, BOTH, TOP
 
 class OutputBox(Frame):
     def __init__(self, parent=None, boxName=""):
         Frame.__init__(self, parent, bg="grey")
-        self.lbl = Label(self, text=boxName)
-        self.xScrollarBar = Scrollbar(self, orient=HORIZONTAL)
-        self.xScrollarBar.pack(side=BOTTOM, fill=X)
-        self.yScrollarBar = Scrollbar(self, orient=VERTICAL)
-        self.yScrollarBar.pack(side=RIGHT, fill=Y)
-        self.textArea = Text(self, bd=5, wrap="none", xscrollcommand=self.xScrollarBar.set, yscrollcommand=self.yScrollarBar.set)
-        self.xScrollarBar.config(command=self.textArea.xview)
-        self.yScrollarBar.config(command=self.textArea.yview)
-        self.lbl.pack(expand=1, fill=X, side=TOP)
-        self.textArea.pack(expand=1, fill=BOTH, side=TOP)
+        Label(self, text=boxName).pack(fill=X, expand=False)
+        xScrollarBar = Scrollbar(self, orient=HORIZONTAL)
+        xScrollarBar.pack(side=BOTTOM, fill=X)
+        self.textArea = scrolledtext.ScrolledText(self, bd=5, wrap="none", xscrollcommand=xScrollarBar.set)
+        xScrollarBar.config(command=self.textArea.xview)
+        self.textArea.pack(side=TOP, expand=True, fill=BOTH)
         self.textArea.tag_configure("WARN_TEXT",background="blue", foreground="yellow")
         self.textArea.tag_configure("ERROR_TEXT", background="blue", foreground="red")
 

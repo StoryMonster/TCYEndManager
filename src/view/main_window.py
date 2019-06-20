@@ -15,9 +15,7 @@ class MainWindow(Tk):
         self.commonWindow = None
         self.dispAreas = {}
         self.controler = None
-        #self._deploy_scroller_bar()
         self._deploy_display_windows()
-        #self.pack()
 
     def run(self):
         self.mainloop()
@@ -32,36 +30,29 @@ class MainWindow(Tk):
         self.protocol("WM_DELETE_WINDOW", self._onMainWindowClose)
 
     def _deploy_display_windows(self):
-        counter = 0
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
         for server in self.servers:
             if server in self.dispAreas or self.servers[server]["isWindowExpected"] == "no": continue
             self.dispAreas[server] = OutputBox(self, server)
-            self.dispAreas[server].grid(row=int(counter/3), column=counter%3)
-            counter += 1
         for client in self.clients:
             if client in self.dispAreas or self.clients[client]["isWindowExpected"] == "no": continue
             self.dispAreas[client] = OutputBox(self, client)
-            self.dispAreas[client].grid(row=int(counter/3), column=counter%3)
+        self.dispAreas["Common Window"] =  OutputBox(self, "Common Window")
+        self.commonWindow = self.dispAreas["Common Window"]
+        counter = 0
+        for name in self.dispAreas:
+            if counter % 3 == 0:
+                self.rowconfigure(int(counter/3), weight=1)
+            self.dispAreas[name].grid(row=int(counter/3), column=counter%3, sticky="NSEW")
             counter += 1
-        self.commonWindow = OutputBox(self, "Common Window")
-        self.commonWindow.grid(row=int(counter/3), column=counter%3)
-
-    def _deploy_scroller_bar(self):
-        xScrollarBar = Scrollbar(self, orient=HORIZONTAL)
-        xScrollarBar.pack(side=BOTTOM, fill=X)
-        yScrollarBar = Scrollbar(self, orient=VERTICAL)
-        yScrollarBar.pack(side=RIGHT, fill=Y)
-        #self.config(xscrollcommand=xScrollarBar.set, yscrollcommand=yScrollarBar.set)
-        xScrollarBar.config(command=self.xview)
-        yScrollarBar.config(command=self.yview)
 
     def _onMainWindowClose(self):
         self.controler.close()
         self.destroy()
 
     def _onClearWindows(self):
-        if self.commonWindow is not None:
-            self.commonWindow.clear()
         for wndName in self.dispAreas:
             if self.dispAreas[wndName] is not None:
                 self.dispAreas[wndName].clear()
