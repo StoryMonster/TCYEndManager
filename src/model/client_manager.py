@@ -15,7 +15,7 @@ class ClientManager(object):
             self.fileWriter = FileWriter(context["logfile"])
             self.fileReader = FileReader(context["logfile"])
         except IOError as e:
-            self.logWnd.write(str(e))
+            self.logWnd.writeline(str(e))
             raise Exception(f"process {self.name} cannot start!")
         self.proc = None
 

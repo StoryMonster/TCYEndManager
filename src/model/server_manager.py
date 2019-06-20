@@ -9,8 +9,14 @@ class ServerManager(object):
         self.name = name
         self.context = context
         self.logWnd = logWnd
-        self.fileWriter = FileWriter(context["logfile"])
-        self.fileReader = FileReader(context["logfile"])
+        self.fileWriter = None
+        self.fileReader = None
+        try:
+            self.fileWriter = FileWriter(context["logfile"])
+            self.fileReader = FileReader(context["logfile"])
+        except IOError as e:
+            self.logWnd.writeline(str(e))
+            raise Exception(f"process {self.name} cannot start!")
         self.proc = None
         self._printServerComments()
 

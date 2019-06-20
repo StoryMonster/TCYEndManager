@@ -1,5 +1,4 @@
-from tkinter import Frame
-from tkinter import Tk, LEFT, RIGHT, BOTH, X, TOP, W, E, N, S, Y
+from tkinter import Tk, LEFT, BOTH
 from .display_panel import DisplayPanel
 from .control_panel import ControlPanel
 
@@ -11,6 +10,7 @@ class MainWindow(Tk):
         self.clients = clients
         self.display_panel = DisplayPanel(self, servers, clients)
         self.control_panel = ControlPanel(self, servers, clients)
+        self._add_general_control_buttons()
         self.serverCtrlBtns = self.control_panel.get_server_control_buttons()
         self.clientCtrlBtns = self.control_panel.get_client_control_buttons()
         self.commonWindow = self.display_panel.get_common_window()
@@ -18,6 +18,9 @@ class MainWindow(Tk):
         self.controler = None
         self.control_panel.pack(side=LEFT, fill=BOTH, expand=1)
         self.display_panel.pack(side=LEFT, fill=BOTH, expand=1)
+
+    def _add_general_control_buttons(self):
+        self.control_panel.add_general_control_button("Clear Windows", self._onClearWindows)
 
     def run(self):
         self.mainloop()
@@ -33,3 +36,8 @@ class MainWindow(Tk):
     def _onMainWindowClose(self):
         self.controler.close()
         self.destroy()
+
+    def _onClearWindows(self):
+        self.commonWindow.clear()
+        for wndName in self.dispAreas:
+            self.dispAreas[wndName].clear()
