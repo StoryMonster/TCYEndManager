@@ -24,9 +24,6 @@ class Controler(object):
             self.syncLogThread.join()
         self.closeAllProcesses()
 
-    def getCompiler(self):
-        return self
-
     def compileServer(self, serverName):
         if serverName not in self.servers: return
         if self.procManagers[serverName] is not None and self.procManagers[serverName].isRunning():
