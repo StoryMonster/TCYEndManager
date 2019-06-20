@@ -18,8 +18,8 @@ def readConfiguration(filename):
 if __name__ == "__main__":
     args = parse_args()
     config = readConfiguration(args.config_file)
-    view = MainWindow(config["servers"], config["clients"])
-    controler = Controler(config["servers"], config["clients"])
+    view = MainWindow(config["servers"], config["clients"], config["others"])
+    controler = Controler(config["servers"], config["clients"], config["others"])
     view.loadControler(controler)
     controler.loadView(view)
     view.run()

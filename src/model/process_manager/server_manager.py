@@ -1,7 +1,7 @@
 import os
 import subprocess
-from .file_reader import FileReader
-from .file_writer import FileWriter
+from model.common.file_reader import FileReader
+from model.common.file_writer import FileWriter
 
 
 class ServerManager(object):
@@ -31,6 +31,9 @@ class ServerManager(object):
         if self.fileReader is not None:
             self.fileReader.close()
             self.fileReader = None
+    
+    def isRunning(self):
+        return self.proc is not None
 
     def syncLogToScreenFromFile(self):
         if self.fileReader is None: return

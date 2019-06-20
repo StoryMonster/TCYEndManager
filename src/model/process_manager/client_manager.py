@@ -1,8 +1,8 @@
 import os
 import subprocess
 import shutil
-from .file_reader import FileReader
-from .file_writer import FileWriter
+from model.common.file_reader import FileReader
+from model.common.file_writer import FileWriter
 
 class ClientManager(object):
     def __init__(self, name, context, logWnd):
@@ -30,6 +30,9 @@ class ClientManager(object):
         if self.fileReader is not None:
             self.fileReader.close()
             self.fileReader = None
+
+    def isRunning(self):
+        return self.proc is not None
 
     def stop(self):
         self.println(f"stop {self.name}")

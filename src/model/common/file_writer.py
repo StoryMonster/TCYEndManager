@@ -3,6 +3,7 @@ import os
 class FileWriter(object):
     def __init__(self, filepath):
         self.fd = open(filepath, "w")
+        self.filepath = filepath
     
     def __exit__(self, *args):
         self.close()

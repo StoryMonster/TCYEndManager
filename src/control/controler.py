@@ -1,14 +1,16 @@
 import time
 import threading
-from model.process_type import ProcessType
-from model.process_manager_factor import create_process_manager
+from model.process_manager.process_type import ProcessType
+from model.process_manager.process_manager_factor import create_process_manager
+from model.compile.compiler import ServerCompiler
 
 
 class Controler(object):
-    def __init__(self, servers, clients):
+    def __init__(self, servers, clients, others):
         self.view = None
         self.servers = servers
         self.clients = clients
+        self.others = others
         self.procManagers = {}
         self.isSyncLogExpected = True
         self.syncLogThread = threading.Thread(target=self._syncLogBetweenScreenAndFile)
@@ -21,6 +23,16 @@ class Controler(object):
             self.isSyncLogExpected = False
             self.syncLogThread.join()
         self.closeProcesses()
+    
+    def getCompiler(self):
+        return self
+    
+    def compileServer(self, serverName):
+        if serverName not in self.servers: return
+        if self.procManagers[serverName] is not None and self.procManagers[serverName].isRunning():
+            self.view.commonWindow.writeline(f"当服务器运行时，不应该重新编译该服务器，编译进程将不会启动")
+            return
+        ServerCompiler(self.servers[serverName], self.others["compiler"], self.view.commonWindow).run()
 
     def _syncLogBetweenScreenAndFile(self):
         while self.isSyncLogExpected:
