@@ -22,7 +22,7 @@ class Controler(object):
         if self.syncLogThread.is_alive():
             self.isSyncLogExpected = False
             self.syncLogThread.join()
-        self.closeProcesses()
+        self.closeAllProcesses()
     
     def getCompiler(self):
         return self
@@ -49,13 +49,18 @@ class Controler(object):
         for client in self.clients:
             winHandler = view.dispAreas[client] if client in view.dispAreas else view.commonWindow
             self.procManagers[client] = create_process_manager(client, ProcessType.ClientProcess, self.clients[client], winHandler)
-        self.syncLogThread.start()
-    
-    def closeProcesses(self, names=[]):
-        for name in names:
-            if (name in self.procManagers) and (self.procManagers[name] is not None):
+        self.syncLogThread.start()    
+
+    def closeAllProcesses(self):
+        for name in self.procManagers:
+            if self.procManagers[name] is not None:
                 self.procManagers[name].close()
                 self.procManagers[name] = None
+
+    def stopAllProcesses(self):
+        for name in self.procManagers:
+            if self.procManagers[name] is not None and self.procManagers[name].isRunning():
+                self.procManagers[name].stop()
 
     def onClickServerButton(self, serverName, isExpectToStart):
         if (serverName not in self.servers) or (self.procManagers[serverName] is None): return

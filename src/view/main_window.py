@@ -24,7 +24,8 @@ class MainWindow(Tk):
         self.display_panel.pack(side=LEFT, fill=BOTH, expand=1)
 
     def _add_general_control_buttons(self):
-        self.control_panel.add_general_control_button("Clear Windows", self._onClearWindows)
+        self.control_panel.add_general_control_button("清空所有窗口", self._onClearWindows)
+        self.control_panel.add_general_control_button("停止所有进程", self._onStopControler)
 
     def run(self):
         self.mainloop()
@@ -43,6 +44,16 @@ class MainWindow(Tk):
         self.destroy()
 
     def _onClearWindows(self):
-        self.commonWindow.clear()
+        if self.commonWindow is not None:
+            self.commonWindow.clear()
         for wndName in self.dispAreas:
-            self.dispAreas[wndName].clear()
+            if self.dispAreas[wndName] is not None:
+                self.dispAreas[wndName].clear()
+    
+    def _onStopControler(self):
+        if self.controler is None: return
+        self.controler.stopAllProcesses()
+        for btnName in self.serverCtrlBtns:
+            self.serverCtrlBtns[btnName].changeButtonStatus(False)
+        for btnName in self.clientCtrlBtns:
+            self.clientCtrlBtns[btnName].changeButtonStatus(False)

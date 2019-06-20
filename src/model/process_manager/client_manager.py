@@ -35,12 +35,12 @@ class ClientManager(object):
         return self.proc is not None
 
     def stop(self):
-        self.println(f"stop {self.name}")
+        self.println(f"停止进程 {self.name}")
         if self.proc is not None:
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.println(f"未能杀死进程 {self.name}")
+                self.println(f"未能杀死进程 {self.name} 或者该进程不存在")
             self.proc = None
 
     def println(self, line):
