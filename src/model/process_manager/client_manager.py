@@ -16,7 +16,7 @@ class ClientManager(object):
             self.fileReader = FileReader(context["logfile"])
         except IOError as e:
             self.logWnd.writeline(str(e))
-            raise Exception(f"process {self.name} cannot start!")
+            raise Exception(f"进程 {self.name} 无法启动")
         self.proc = None
 
     def __exit__(self, *args):
@@ -40,7 +40,7 @@ class ClientManager(object):
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.println(f"The process {self.name} is not killed!")
+                self.println(f"未能杀死进程 {self.name}")
             self.proc = None
 
     def println(self, line):
@@ -53,17 +53,17 @@ class ClientManager(object):
     def run(self):
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
-            self.println(f"{workdir} is not exist")
+            self.println(f"工作路径不存在 {workdir}")
             return
         cwd = os.getcwd()
         os.chdir(workdir)
         simulator, configFile = self.context["simulator"], self.context["configFile"]
         if (not os.path.exists(simulator)) or (not os.path.exists(configFile)):
-            self.println(f"The {simulator} not exist or config file {configFile} not exist!")
+            self.println(f"模拟器 {simulator} 或者配置文件 {configFile} 不存在!")
             return
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
         scriptPath = self.context["script"]
         self.proc = subprocess.Popen(f"{simulator} {scriptPath}", stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
-        self.println(f"{self.name} is running")
+        self.println(f"进程 {self.name} 正在运行")

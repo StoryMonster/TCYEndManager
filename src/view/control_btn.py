@@ -7,7 +7,8 @@ class ControlButton(Frame):
         Frame.__init__(self, parent)
         self.btnName = btnName
         self.btnText = StringVar()
-        self.btnText.set(f"Start {btnName}")
+        self.btnText.set(f"启动{btnName}")
+        self.isRunningStatus = False
         self.btn = Button(self, textvariable=self.btnText, command=self._onClick)
         self.btn.pack(fill=X)
         self.description = StringVar()
@@ -21,9 +22,7 @@ class ControlButton(Frame):
     
     def _onClick(self):
         if self.callback is None: return
-        if self.btnText.get()[0:5] == "Start":
-            self.btnText.set("Stop  " + self.btnName)
-            self.callback(self.btnName, True)
-            return
-        self.btnText.set("Start " + self.btnName)
-        self.callback(self.btnName, False)
+        self.isRunningStatus = not self.isRunningStatus
+        self.callback(self.btnName, self.isRunningStatus)
+        self.btnText.set(("启动" if self.isRunningStatus == False else "停止") + self.btnName)
+        

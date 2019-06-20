@@ -16,7 +16,7 @@ class ServerManager(object):
             self.fileReader = FileReader(context["logfile"])
         except IOError as e:
             self.logWnd.writeline(str(e))
-            raise Exception(f"process {self.name} cannot start!")
+            raise Exception(f"进程 {self.name} 不能启动!")
         self.proc = None
         self._printServerComments()
 
@@ -45,7 +45,7 @@ class ServerManager(object):
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.println(f"The process {self.name} is not killed!")
+                self.println(f"未能杀死进程 {self.name}")
             self.proc = None
 
     def println(self, line):
@@ -59,14 +59,14 @@ class ServerManager(object):
     def run(self):
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
-            self.println(f"{workdir} is not exist")
+            self.println(f"工作空间 {workdir} 不存在")
             return
         cwd = os.getcwd()
         os.chdir(workdir)
         exename, configFileName = self.context["exefile"], self.context["configfile"]
         if (not os.path.exists(exename)) or (not os.path.exists(configFileName)):
-            self.println(f"The {exename} not exist or config file {configFileName} not exist!")
+            self.println(f"可执行程序 {exename} 或者配置文件 {configFileName} 不存在!")
             return
         self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
-        self.println(f"{exename} is running")
+        self.println(f"进程 {exename} 正在运行")

@@ -15,7 +15,7 @@ class BuildMenu(Menu):
         self.controler = controler
 
     def _add_item(self, serverName):
-        self.add_command(label=f"build {serverName}", command=lambda: self._onBuildServer(serverName))
+        self.add_command(label=f"编译{serverName}", command=lambda: self._onBuildServer(serverName))
 
     def _onBuildServer(self, serverName):
         if self.controler is None: return
