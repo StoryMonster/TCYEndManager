@@ -40,12 +40,12 @@ class ServerManager(object):
         self.logWnd.writelines(self.fileReader.readlines())
 
     def stop(self):
-        self.println(f"停止进程 {self.name}")
+        self.logWnd.info(f"停止进程 {self.name}")
         if self.proc is not None:
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.println(f"未能杀死进程 {self.name} 或者该进程不存在")
+                self.logWnd.warn(f"未能杀死进程 {self.name} 或者该进程不存在")
             self.proc = None
 
     def println(self, line):
@@ -54,19 +54,19 @@ class ServerManager(object):
     def _printServerComments(self):
         if "comments" in self.context:
             for line in self.context["comments"]:
-                self.println(line)
+                self.logWnd.info(line)
 
     def run(self):
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
-            self.println(f"工作空间 {workdir} 不存在")
+            self.logWnd.error(f"工作空间 {workdir} 不存在")
             return
         cwd = os.getcwd()
         os.chdir(workdir)
         exename, configFileName = self.context["exefile"], self.context["configfile"]
         if (not os.path.exists(exename)) or (not os.path.exists(configFileName)):
-            self.println(f"可执行程序 {exename} 或者配置文件 {configFileName} 不存在!")
+            self.logWnd.error(f"可执行程序 {exename} 或者配置文件 {configFileName} 不存在!")
             return
         self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
-        self.println(f"进程 {exename} 正在运行")
+        self.logWnd.info(f"进程 {exename} 正在运行")

@@ -17,20 +17,20 @@ class Controler(object):
 
     def __exit__(self, *args):
         self.close()
-    
+
     def close(self):
         if self.syncLogThread.is_alive():
             self.isSyncLogExpected = False
             self.syncLogThread.join()
         self.closeAllProcesses()
-    
+
     def getCompiler(self):
         return self
-    
+
     def compileServer(self, serverName):
         if serverName not in self.servers: return
         if self.procManagers[serverName] is not None and self.procManagers[serverName].isRunning():
-            self.view.commonWindow.writeline(f"当服务器运行时，不应该重新编译该服务器，编译进程将不会启动")
+            self.view.commonWindow.warn(f"当服务器运行时，不应该重新编译该服务器，编译进程将不会启动")
             return
         ServerCompiler(self.servers[serverName], self.others["compiler"], self.view.commonWindow).run()
 

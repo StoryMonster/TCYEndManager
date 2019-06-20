@@ -41,7 +41,7 @@ class ServerCompiler(object):
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.wnd.writeline(f"未能成功结束进程：{self.serverName}")
+                self.wnd.warn(f"未能成功结束进程：{self.serverName}")
             self.proc = None
         if self.fileReader is not None:
             self.fileReader.close()
@@ -51,20 +51,20 @@ class ServerCompiler(object):
         self.stop()
 
     def run(self):
-        self.wnd.writeline(f"开始编译：{self.serverName}")
+        self.wnd.info(f"开始编译：{self.serverName}")
         compilerpath = self.compilerContext["path"]
         vcvarsall = os.path.join(compilerpath, "VC/vcvarsall.bat")
         if not os.path.isfile(vcvarsall):
-            self.wnd.writeline(f"未找到编译器，无法编译 {self.serverName}")
+            self.wnd.error(f"未找到编译器，无法编译 {self.serverName}")
             return
         projectdir = self.server["projectdir"]
         sln, vcxproj = getProjectKeyFiles(projectdir)
         if sln is None or vcxproj is None:
-            self.wnd.writeline(f"工程中未发现.sln文件或者.vcxproj文件，无法编译{self.serverName}")
+            self.wnd.error(f"工程中未发现.sln文件或者.vcxproj文件，无法编译{self.serverName}")
             return
         buildmode =  recorgnizeBuildMode(self.compilerContext["compilemode"])
         cmd = f'scripts\\compiler.bat "{vcvarsall}" "{projectdir}" "{sln}" "{buildmode}" "{vcxproj}" "{self.logfile}"'
         self.proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
         self.proc.wait()
         self.wnd.writelines(self.fileReader.readlines())
-        self.wnd.writeline(f"编译完成，详细编译日志: {self.logfile}\n")
+        self.wnd.info(f"编译完成，详细编译日志: {self.logfile}\n")
