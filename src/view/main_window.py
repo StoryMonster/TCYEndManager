@@ -60,6 +60,8 @@ class MainWindow(Tk):
     def _onStopControler(self):
         if self.controler is None: return
         self.controler.stopAllProcesses()
+        self.menu.resetServersStatus()
+        self.menu.resetClientsStatus()
 
     def _onClickServers(self, serverName, toRunServer):
         if self.controler is None: return

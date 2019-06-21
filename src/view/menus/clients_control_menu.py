@@ -20,3 +20,7 @@ class ClientsControlMenu(Menu):
     def _onClickClient(self, clientName):
         if self.callback is None: return
         self.callback(clientName, self.clients_status[clientName].get())
+
+    def resetStatus(self):
+        for name in self.clients_status:
+            self.clients_status[name].set(False)

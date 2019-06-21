@@ -11,13 +11,8 @@ class ServerManager(object):
         self.logWnd = logWnd
         self.fileWriter = None
         self.fileReader = None
-        try:
-            self.fileWriter = FileWriter(context["logfile"])
-            self.fileReader = FileReader(context["logfile"])
-        except IOError as e:
-            self.logWnd.writeline(str(e))
-            raise Exception(f"进程 {self.name} 不能启动!")
         self.proc = None
+        self.logfile = context["logfile"]
         self._printServerComments()
 
     def __exit__(self, *args):
@@ -25,6 +20,8 @@ class ServerManager(object):
 
     def close(self):
         self.stop()
+    
+    def _closeLogFileHandlers(self):
         if self.fileWriter is not None:
             self.fileWriter.close()
             self.fileWriter = None
@@ -40,6 +37,7 @@ class ServerManager(object):
         self.logWnd.writelines(self.fileReader.readlines())
 
     def stop(self):
+        self._closeLogFileHandlers()
         self.logWnd.info(f"停止进程 {self.name}")
         if self.proc is not None:
             try:
@@ -57,6 +55,12 @@ class ServerManager(object):
                 self.logWnd.info(line)
 
     def run(self):
+        try:
+            self.fileWriter = FileWriter(self.logfile)
+            self.fileReader = FileReader(self.logfile)
+        except IOError as e:
+            self.logWnd.writeline(str(e))
+            raise Exception(f"进程 {self.name} 不能启动!")
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
             self.logWnd.error(f"工作空间 {workdir} 不存在")

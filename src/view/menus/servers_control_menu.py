@@ -20,3 +20,7 @@ class ServersControlMenu(Menu):
     def _onClickServer(self, serverName):
         if self.callback is None: return
         self.callback(serverName, self.servers_status[serverName].get())
+    
+    def resetStatus(self):
+        for serverName in self.servers_status:
+            self.servers_status[serverName].set(False)

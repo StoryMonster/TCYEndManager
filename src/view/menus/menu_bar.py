@@ -28,4 +28,10 @@ class MenuBar(Menu):
     def registerOtherItems(self, name, callback):
         self.otherMenu.addItem(name, callback)
 
+    def resetServersStatus(self):
+        self.serversMenu.resetStatus()
+
+    def resetClientsStatus(self):
+        self.clientsMenu.resetStatus()
+
         

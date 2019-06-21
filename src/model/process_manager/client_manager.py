@@ -11,12 +11,7 @@ class ClientManager(object):
         self.logWnd = logWnd
         self.fileWriter = None
         self.fileReader = None
-        try:
-            self.fileWriter = FileWriter(context["logfile"])
-            self.fileReader = FileReader(context["logfile"])
-        except IOError as e:
-            self.logWnd.writeline(str(e))
-            raise Exception(f"进程 {self.name} 无法启动")
+        self.logfile = context["logfile"]
         self.proc = None
 
     def __exit__(self, *args):
@@ -24,6 +19,8 @@ class ClientManager(object):
 
     def close(self):
         self.stop()
+
+    def _closeLogFileHandlers(self):
         if self.fileWriter is not None:
             self.fileWriter.close()
             self.fileWriter = None
@@ -35,6 +32,7 @@ class ClientManager(object):
         return self.proc is not None
 
     def stop(self):
+        self._closeLogFileHandlers()
         self.logWnd.info(f"停止进程 {self.name}")
         if self.proc is not None:
             try:
@@ -51,6 +49,12 @@ class ClientManager(object):
         self.logWnd.writelines(self.fileReader.readlines())
 
     def run(self):
+        try:
+            self.fileWriter = FileWriter(self.logfile)
+            self.fileReader = FileReader(self.logfile)
+        except IOError as e:
+            self.logWnd.writeline(str(e))
+            raise Exception(f"进程 {self.name} 无法启动")
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
             self.logWnd.error(f"工作路径不存在 {workdir}")
