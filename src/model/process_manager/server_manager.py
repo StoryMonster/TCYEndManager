@@ -34,7 +34,10 @@ class ServerManager(object):
 
     def syncLogToScreenFromFile(self):
         if self.fileReader is None: return
-        self.logWnd.writelines(self.fileReader.readlines())
+        try:
+            self.logWnd.writelines(self.fileReader.readlines())
+        except Exception as e:
+            self.logWnd.warn(str(e))
 
     def stop(self):
         self._closeLogFileHandlers()
@@ -46,31 +49,42 @@ class ServerManager(object):
                 self.logWnd.warn(f"未能杀死进程 {self.name} 或者该进程不存在")
             self.proc = None
 
-    def println(self, line):
-        self.logWnd.writeline(line)
-
     def _printServerComments(self):
         if "comments" in self.context:
             for line in self.context["comments"]:
                 self.logWnd.info(line)
 
-    def run(self):
-        try:
-            self.fileWriter = FileWriter(self.logfile)
-            self.fileReader = FileReader(self.logfile)
-        except IOError as e:
-            self.logWnd.writeline(str(e))
-            raise Exception(f"进程 {self.name} 不能启动!")
+    def _precheck(self):
+        if self.isRunning():
+            self.logWnd.error(f"{self.name} 还在运行中")
+            return False
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
             self.logWnd.error(f"工作空间 {workdir} 不存在")
-            return
+            return False
+        exefile = self.context["exefile"]
+        if not os.path.isfile(exefile):
+            self.logWnd.error(f"{exefile} 不存在!")
+            return False
+        return True
+
+    def _startupLogEnvironment(self):
+        try:
+            self.fileWriter = FileWriter(self.logfile)
+            self.fileReader = FileReader(self.logfile)
+            return True
+        except IOError as e:
+            self.logWnd.error(str(e))
+            self.logWnd.error(f"进程 {self.name} 无法启动")
+            return False
+
+    def run(self):
+        if not self._precheck(): return
+        if not self._startupLogEnvironment(): return
+        workdir = self.context["workdir"]
         cwd = os.getcwd()
         os.chdir(workdir)
-        exename, configFileName = self.context["exefile"], self.context["configfile"]
-        if (not os.path.exists(exename)) or (not os.path.exists(configFileName)):
-            self.logWnd.error(f"可执行程序 {exename} 或者配置文件 {configFileName} 不存在!")
-            return
+        exename = self.context["exefile"]
         self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
         self.logWnd.info(f"进程 {exename} 正在运行")

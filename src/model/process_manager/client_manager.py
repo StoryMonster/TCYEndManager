@@ -41,30 +41,44 @@ class ClientManager(object):
                 self.logWnd.warn(f"未能杀死进程 {self.name} 或者该进程不存在")
             self.proc = None
 
-    def println(self, line):
-        self.logWnd.writeline(line)
-
     def syncLogToScreenFromFile(self):
         if self.fileReader is None: return
-        self.logWnd.writelines(self.fileReader.readlines())
+        try:
+            self.logWnd.writelines(self.fileReader.readlines())
+        except Exception as e:
+            self.logWnd.warn(str(e))
 
-    def run(self):
+    def _precheck(self):
+        if self.isRunning():
+             self.logWnd.error(f"{self.name} 还在运行中")
+             return False
+        workdir = self.context["workdir"]
+        if not os.path.isdir(workdir):
+            self.logWnd.error(f"工作路径不存在 {workdir}")
+            return False
+        simulator, configFile = self.context["simulator"], self.context["configFile"]
+        if (not os.path.isfile(simulator)) or (not os.path.isfile(configFile)):
+            self.logWnd.error(f"模拟器 {simulator} 或者配置文件 {configFile} 不存在!")
+            return False
+        return True
+
+    def _startupLogEnvironment(self):
         try:
             self.fileWriter = FileWriter(self.logfile)
             self.fileReader = FileReader(self.logfile)
+            return True
         except IOError as e:
-            self.logWnd.writeline(str(e))
-            raise Exception(f"进程 {self.name} 无法启动")
+            self.logWnd.error(str(e))
+            self.logWnd.error(f"进程 {self.name} 无法启动")
+            return False
+
+    def run(self):
+        if not self._precheck(): return
+        if not self._startupLogEnvironment(): return
         workdir = self.context["workdir"]
-        if not os.path.exists(workdir):
-            self.logWnd.error(f"工作路径不存在 {workdir}")
-            return
         cwd = os.getcwd()
         os.chdir(workdir)
         simulator, configFile = self.context["simulator"], self.context["configFile"]
-        if (not os.path.exists(simulator)) or (not os.path.exists(configFile)):
-            self.logWnd.error(f"模拟器 {simulator} 或者配置文件 {configFile} 不存在!")
-            return
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
         scriptPath = self.context["script"]

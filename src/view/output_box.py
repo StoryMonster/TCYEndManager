@@ -1,5 +1,6 @@
-from tkinter import Label, Scrollbar, Frame, scrolledtext
+from tkinter import Label, Scrollbar, Frame, scrolledtext, Menu
 from tkinter import HORIZONTAL, VERTICAL, BOTTOM, X, RIGHT, Y, BOTH, TOP
+from .menus.output_box_popup_menu import OutputBoxPopupMenu
 
 class OutputBox(Frame):
     def __init__(self, parent=None, boxName=""):
@@ -12,6 +13,9 @@ class OutputBox(Frame):
         self.textArea.pack(side=TOP, expand=True, fill=BOTH)
         self.textArea.tag_configure("WARN_TEXT",background="blue", foreground="yellow")
         self.textArea.tag_configure("ERROR_TEXT", background="blue", foreground="red")
+        self.popupMenu = OutputBoxPopupMenu(self.textArea)
+        self.popupMenu.register("清空", self.clear)
+        self.textArea.bind("<Button-3>", self._rightClick)
 
     def write(self, text):
         self.textArea.insert("end", text)
@@ -40,3 +44,6 @@ class OutputBox(Frame):
 
     def clear(self):
         self.textArea.delete(1.0, "end")
+
+    def _rightClick(self, event):
+        self.popupMenu.show(event.x_root, event.y_root)

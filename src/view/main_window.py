@@ -11,11 +11,13 @@ class MainWindow(Tk):
         self.clients = clients
         self.others = others
         self.menu = MenuBar(self, servers, clients, others)
+        self.popup_menu = None
         self.config(menu=self.menu)
         self.commonWindow = None
         self.dispAreas = {}
         self.controler = None
         self._deploy_display_windows()
+        self.bind("<Button-3>", self._rightClick)
 
     def run(self):
         self.mainloop()
@@ -27,6 +29,7 @@ class MainWindow(Tk):
         self.menu.registerBuilderCallback(self._onClickServerBuilders)
         self.menu.registerClientsCallback(self._onClickClients)
         self.menu.registerServersCallback(self._onClickServers)
+        self.popup_menu = self.menu.otherMenu
         self.protocol("WM_DELETE_WINDOW", self._onMainWindowClose)
 
     def _deploy_display_windows(self):
@@ -73,3 +76,8 @@ class MainWindow(Tk):
 
     def _onClickServerBuilders(self, serverName):
         self.controler.compileServer(serverName)
+
+    def _rightClick(self, event):
+        if self.popup_menu is None: return
+        self.popup_menu.post(event.x_root, event.y_root)
+        

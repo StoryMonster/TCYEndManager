@@ -3,8 +3,7 @@
         "CHUNK SERVER": {
             "name": "chunk server",
             "workdir": "D:/chunk_server_pc_mobile/lagtchunksvr/Debug",
-            "exefile": "LaGtChunkSvrDC.exe",
-            "configfile": "LaGtChunkSvr.ini",
+            "exefile": "D:/chunk_server_pc_mobile/lagtchunksvr/Debug/LaGtChunkSvrDC.exe",
             "logfile": "D:/projects/TCYEndManager/logs/ChunkServer.log",
             "comments": [],
             "isWindowExpected": "yes",
@@ -14,8 +13,7 @@
         "ASSIST SERVER": {
             "name": "assist server",
             "workdir": "D:/chunk_server_pc_mobile/lagtassitsvr/Debug",
-            "exefile": "LaGtAssitSvrcd.exe",
-            "configfile": "LaGtAssitSvr.ini",
+            "exefile": "D:/chunk_server_pc_mobile/lagtassitsvr/Debug/LaGtAssitSvrcd.exe",
             "logfile": "D:/projects/TCYEndManager/logs/AssistServer.log",
             "isWindowExpected": "yes",
             "isCompileEnable": "yes",
@@ -24,8 +22,7 @@
         "ASSIST PROXY SERVER": {
             "name": "assist proxy server",
             "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
-            "exefile": "assistmpsvr.exe",
-            "configfile": "assistmpsvr.ini",
+            "exefile": "D:/chunk_server_pc_mobile/mpsvr/debug/assistmpsvr.exe",
             "logfile": "D:/projects/TCYEndManager/logs/AssistProxyServer.log",
             "isWindowExpected": "no",
             "isCompileEnable": "no",
@@ -34,8 +31,7 @@
         "GAME SERVER": {
             "name": "game server",
             "workdir": "D:/DGT_Server/gamesvr/Debug/",
-            "exefile": "lagpsvr.exe",
-            "configfile": "lagpsvr.ini",
+            "exefile": "D:/DGT_Server/gamesvr/Debug/lagpsvr.exe",
             "logfile": "D:/projects/TCYEndManager/logs/GameServer.log",
             "isWindowExpected": "yes",
             "isCompileEnable": "yes",
@@ -44,7 +40,7 @@
         "GAME PROXY SERVER": {
             "name": "game proxy server",
             "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
-            "exefile": "lagtmpsvr.exe",
+            "exefile": "D:/chunk_server_pc_mobile/mpsvr/debug/lagtmpsvr.exe",
             "configfile": "lagtmpsvr.ini",
             "logfile": "D:/projects/TCYEndManager/logs/GameProxyServer.log",
             "isWindowExpected": "no",
@@ -54,8 +50,7 @@
         "ROOM SERVER": {
             "name": "room server",
             "workdir": "D:/DGT_Server/roomsvrlagp/Debug",
-            "exefile": "roomsvrlagpD.exe",
-            "configfile": "RoomSvr.ini",
+            "exefile": "D:/DGT_Server/roomsvrlagp/Debug/roomsvrlagpD.exe",
             "logfile": "D:/projects/TCYEndManager/logs/RoomServer.log",
             "comments": [],
             "isWindowExpected": "yes",
@@ -65,8 +60,7 @@
         "ROOM PROXY SERVER": {
             "name": "room proxy server",
             "workdir": "D:/roommpsvr",
-            "exefile": "roommpsvrlagp.exe",
-            "configfile": "roommpsvr.ini",
+            "exefile": "D:/roommpsvr/roommpsvrlagp.exe",
             "logfile": "D:/projects/TCYEndManager/logs/RoomProxyServer.log",
             "isWindowExpected": "no",
             "isCompileEnable": "no",
@@ -94,13 +88,13 @@
             "script": "D:/lagt",
             "isWindowExpected": "no"
         },
-        "CLIENT3": {
+        "CLIENT8": {
             "id": "",
             "password": "",
-            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_3.ini",
+            "configFile": "D:/chend/Desktop/TCY_GAME/CTWL/res/client_configurations/windows_player_8.ini",
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
-            "logfile": "D:/projects/TCYEndManager/logs/client3.log",
+            "logfile": "D:/projects/TCYEndManager/logs/client8.log",
             "script": "D:/lagt",
             "isWindowExpected": "no"
         }
