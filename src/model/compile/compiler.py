@@ -50,18 +50,23 @@ class ServerCompiler(object):
     def __exit__(self, *args):
         self.stop()
 
-    def run(self):
-        self.wnd.info(f"开始编译：{self.serverName}")
-        compilerpath = self.compilerContext["path"]
-        vcvarsall = os.path.join(compilerpath, "VC/vcvarsall.bat")
+    def _precheck(self):
+        vcvarsall = os.path.join(self.compilerContext["path"], "VC/vcvarsall.bat")
         if not os.path.isfile(vcvarsall):
             self.wnd.error(f"未找到编译器，无法编译 {self.serverName}")
-            return
-        projectdir = self.server["projectdir"]
-        sln, vcxproj = getProjectKeyFiles(projectdir)
+            return False
+        sln, vcxproj = getProjectKeyFiles(self.server["projectdir"])
         if sln is None or vcxproj is None:
             self.wnd.error(f"工程中未发现.sln文件或者.vcxproj文件，无法编译{self.serverName}")
-            return
+            return False
+        return True
+
+    def run(self):
+        if not self._precheck(): return
+        self.wnd.info(f"开始编译：{self.serverName}")
+        vcvarsall = os.path.join(self.compilerContext["path"], "VC/vcvarsall.bat")
+        projectdir = self.server["projectdir"]
+        sln, vcxproj = getProjectKeyFiles(projectdir)
         buildmode =  recorgnizeBuildMode(self.compilerContext["compilemode"])
         cmd = f'scripts\\compiler.bat "{vcvarsall}" "{projectdir}" "{sln}" "{buildmode}" "{vcxproj}" "{self.logfile}"'
         self.proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
