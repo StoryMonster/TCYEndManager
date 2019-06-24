@@ -15,7 +15,7 @@ class ClientsControlMenu(Menu):
     def _addItem(self, clientName):
         self.clients_status[clientName] = BooleanVar()
         self.clients_status[clientName].set(False)
-        self.add_checkbutton(label=f"运行{clientName}", onvalue=True, offvalue=False, variable=self.clients_status[clientName], command=lambda : self._onClickClient(clientName))
+        self.add_checkbutton(label="运行"+clientName, onvalue=True, offvalue=False, variable=self.clients_status[clientName], command=lambda : self._onClickClient(clientName))
 
     def _onClickClient(self, clientName):
         if self.callback is None: return

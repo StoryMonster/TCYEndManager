@@ -3,7 +3,7 @@ import os
 class FileReader(object):
     def __init__(self, filepath):
         if not os.path.exists(filepath):
-            raise IOError(f"未找到文件 {filepath}")
+            raise IOError("未找到文件 " + filepath)
         self.fd = open(filepath, "r")
     
     def __exit__(self, *args):

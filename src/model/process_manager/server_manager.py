@@ -41,12 +41,12 @@ class ServerManager(object):
 
     def stop(self):
         self._closeLogFileHandlers()
-        self.logWnd.info(f"停止进程 {self.name}")
+        self.logWnd.info("停止进程 "+self.name)
         if self.proc is not None:
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.logWnd.warn(f"未能杀死进程 {self.name} 或者该进程不存在")
+                self.logWnd.warn("未能杀死进程 {} 或者该进程不存在".format(self.name))
             self.proc = None
 
     def _printServerComments(self):
@@ -56,15 +56,15 @@ class ServerManager(object):
 
     def _precheck(self):
         if self.isRunning():
-            self.logWnd.error(f"{self.name} 还在运行中")
+            self.logWnd.error(self.name + " 还在运行中")
             return False
         workdir = self.context["workdir"]
         if not os.path.exists(workdir):
-            self.logWnd.error(f"工作空间 {workdir} 不存在")
+            self.logWnd.error("工作空间 {} 不存在".format(workdir))
             return False
         exefile = self.context["exefile"]
         if not os.path.isfile(exefile):
-            self.logWnd.error(f"{exefile} 不存在!")
+            self.logWnd.error(exefile+" 不存在!")
             return False
         return True
 
@@ -75,7 +75,7 @@ class ServerManager(object):
             return True
         except IOError as e:
             self.logWnd.error(str(e))
-            self.logWnd.error(f"进程 {self.name} 无法启动")
+            self.logWnd.error("进程 {} 无法启动".format(self.name))
             return False
 
     def run(self):
@@ -87,4 +87,4 @@ class ServerManager(object):
         exename = self.context["exefile"]
         self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
-        self.logWnd.info(f"进程 {exename} 正在运行")
+        self.logWnd.info("进程 {} 正在运行".format(exename))

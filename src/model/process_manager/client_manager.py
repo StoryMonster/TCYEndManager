@@ -33,12 +33,12 @@ class ClientManager(object):
 
     def stop(self):
         self._closeLogFileHandlers()
-        self.logWnd.info(f"停止进程 {self.name}")
+        self.logWnd.info("停止进程 "+self.name)
         if self.proc is not None:
             try:
                 os.kill(self.proc.pid, 9)
             except PermissionError:
-                self.logWnd.warn(f"未能杀死进程 {self.name} 或者该进程不存在")
+                self.logWnd.warn("未能杀死进程 {name} 或者该进程不存在".format(name=self.name))
             self.proc = None
 
     def syncLogToScreenFromFile(self):
@@ -50,15 +50,15 @@ class ClientManager(object):
 
     def _precheck(self):
         if self.isRunning():
-             self.logWnd.error(f"{self.name} 还在运行中")
+             self.logWnd.error(self.name+" 还在运行中")
              return False
         workdir = self.context["workdir"]
         if not os.path.isdir(workdir):
-            self.logWnd.error(f"工作路径不存在 {workdir}")
+            self.logWnd.error("工作路径不存在: "+workdir)
             return False
         simulator, configFile = self.context["simulator"], self.context["configFile"]
         if (not os.path.isfile(simulator)) or (not os.path.isfile(configFile)):
-            self.logWnd.error(f"模拟器 {simulator} 或者配置文件 {configFile} 不存在!")
+            self.logWnd.error("模拟器 {} 或者配置文件 {} 不存在!".format(simulator, configFile))
             return False
         return True
 
@@ -69,7 +69,7 @@ class ClientManager(object):
             return True
         except IOError as e:
             self.logWnd.error(str(e))
-            self.logWnd.error(f"进程 {self.name} 无法启动")
+            self.logWnd.error("进程 {} 无法启动".format(self.name))
             return False
 
     def run(self):
@@ -82,6 +82,6 @@ class ClientManager(object):
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
         scriptPath = self.context["script"]
-        self.proc = subprocess.Popen(f"{simulator} {scriptPath}", stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
+        self.proc = subprocess.Popen("{} {}".format(simulator, scriptPath), stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
         os.chdir(cwd)
-        self.logWnd.info(f"进程 {self.name} 正在运行")
+        self.logWnd.info("进程 {} 开始运行".format(self.name))

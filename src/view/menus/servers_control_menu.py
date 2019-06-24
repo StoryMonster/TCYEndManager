@@ -15,7 +15,7 @@ class ServersControlMenu(Menu):
     def _add_item(self, serverName):
         self.servers_status[serverName] = BooleanVar()
         self.servers_status[serverName].set(False)
-        self.add_checkbutton(label=f"运行{serverName}", command=lambda: self._onClickServer(serverName), onvalue=True, offvalue=False, variable=self.servers_status[serverName])
+        self.add_checkbutton(label="运行"+serverName, command=lambda: self._onClickServer(serverName), onvalue=True, offvalue=False, variable=self.servers_status[serverName])
 
     def _onClickServer(self, serverName):
         if self.callback is None: return

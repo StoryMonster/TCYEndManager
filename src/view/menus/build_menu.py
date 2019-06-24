@@ -15,7 +15,7 @@ class BuildMenu(Menu):
         self.callback = callback
 
     def _add_item(self, serverName):
-        self.add_command(label=f"编译{serverName}", command=lambda: self._onBuildServer(serverName))
+        self.add_command(label="编译{}".format(serverName), command=lambda: self._onBuildServer(serverName))
 
     def _onBuildServer(self, serverName):
         if self.callback is None: return
