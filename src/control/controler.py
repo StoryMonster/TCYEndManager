@@ -29,7 +29,7 @@ class Controler(object):
         if self.procManagers[serverName] is not None and self.procManagers[serverName].isRunning():
             self.view.commonWindow.warn("当服务器运行时，不应该重新编译该服务器，编译进程将不会启动")
             return
-        ServerCompiler(self.servers[serverName], self.others["compiler"], self.view.commonWindow).run()
+        ServerCompiler(serverName, self.servers[serverName], self.others["compiler"], self.view.commonWindow).run()
 
     def _syncLogBetweenScreenAndFile(self):
         while self.isSyncLogExpected:

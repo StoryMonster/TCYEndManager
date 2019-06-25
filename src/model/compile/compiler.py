@@ -27,12 +27,12 @@ def toWinPath(str):
     return str.replace("/", "\\")
 
 class ServerCompiler(object):
-    def __init__(self, server, compilerContext, wnd):
-        self.server = server
+    def __init__(self, serverName, serverContext, compilerContext, wnd):
+        self.server = serverContext
         self.compilerContext = compilerContext
         self.wnd = wnd
         self.proc = None
-        self.serverName = self.server["name"]
+        self.serverName = serverName
         self.logfile = os.path.abspath(self.compilerContext["logfile"])
         self.fileReader = FileReader(self.logfile)
 

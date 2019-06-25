@@ -19,6 +19,30 @@
 <li>控制移动端模拟器启动</li>
 <li>快捷编译服务端程序</li>
 
-</body>
+<h4>配置文件</h4>
+<p>此软件需要配合json格式的配置文件一起启动，现阶段三大模块(serves, clients, others)缺一不可
+<h5>servers</h5>
+<p>使用者可以根据自己的需求按照类似格式添加server，server各属性字段讲解如下：<br>
+<p>workdir: server运行的路径，即该路径下要包含有server启动的所有相关配置<br>
+<p>exefile: server可执行文件路径<br>
+<p>logfile: server运行期间的log文件<br>
+<p>comments: 在server运行前希望提醒使用者的语句<br>
+<p>isWindowExpected: 是否希望在软件中为该server单独配置一个显示窗口，如果为no，则该server的输出将打印在公共窗口上<br>
+<p>isCompileEnabled: 是否允许对该server进行重新编译，如果yes, projectdir就需要填写，否则，projectdir不需要<br>
+<p>projectdir: 工程目录，该目录下必须存在相应的sln文件和vcxproj文件<br>
 
+<h5>clients</h5>
+<p>现阶段只支持使用MCRuntime.exe启动移动端
+<p>id: 保留，未使用
+<p>password: 保留，未使用
+<p>configFile: 客户端启动时的配置文件，在客户端启动时，该文件内容将被复制到MCRuntime目录下的windows.ini中，所以最好对原始windows.ini做好备份
+<p>simulator: MCRuntime.exe的绝对路径
+<p>logfile: 客户端运行日志
+<p>script: 客户端程序
+<p>isWindowExpected: 是否需要为该客户端单独开辟一个输出窗口
+
+<h5>others</h5>
+<p>compiler: 只有当配置了compiler之后，才支持使用编译功能，只支持编译Visual Studio工程。<font color=red>当编译Server时，程序会被block住，当编译完成之后方可继续操作</font>
+<p>quickLaunchServers: 只有当配置了quickLaunchServers之后，才支持使用快速启动服务器功能，列表中服务器名称需要<font color=red>按照启动顺序排列</font>
+</body>
 </html>

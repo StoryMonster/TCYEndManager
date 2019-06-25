@@ -13,6 +13,7 @@ class OutputBox(Frame):
         self.textArea.pack(side=TOP, expand=True, fill=BOTH)
         self.textArea.tag_configure("WARN_TEXT",background="blue", foreground="yellow")
         self.textArea.tag_configure("ERROR_TEXT", background="blue", foreground="red")
+        self.textArea.tag_configure("COMMENT_TEXT", background="blue", foreground="white")
         self.popupMenu = OutputBoxPopupMenu(self.textArea)
         self.popupMenu.register("清空", self.clear)
         self.textArea.bind("<Button-3>", self._rightClick)
@@ -44,6 +45,9 @@ class OutputBox(Frame):
 
     def clear(self):
         self.textArea.delete(1.0, "end")
+
+    def comment(self, text):
+        self.writeLineWithTag("[COMMENT] " + text, "COMMENT_TEXT")
 
     def _rightClick(self, event):
         self.popupMenu.show(event.x_root, event.y_root)

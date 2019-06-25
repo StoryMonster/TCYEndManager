@@ -1,10 +1,10 @@
 import os
 
 class FileReader(object):
-    def __init__(self, filepath):
+    def __init__(self, filepath, encoding="gbk"):
         if not os.path.exists(filepath):
             raise IOError("未找到文件 " + filepath)
-        self.fd = open(filepath, "r")
+        self.fd = open(filepath, "r", encoding=encoding)
     
     def __exit__(self, *args):
         self.close()

@@ -52,7 +52,7 @@ class ServerManager(object):
     def _printServerComments(self):
         if "comments" in self.context:
             for line in self.context["comments"]:
-                self.logWnd.info(line)
+                self.logWnd.comment(line)
 
     def _precheck(self):
         if self.isRunning():

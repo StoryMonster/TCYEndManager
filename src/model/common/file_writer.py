@@ -1,8 +1,8 @@
 import os
 
 class FileWriter(object):
-    def __init__(self, filepath):
-        self.fd = open(filepath, "w")
+    def __init__(self, filepath, encoding="gbk"):
+        self.fd = open(filepath, "w", encoding=encoding)
         self.filepath = filepath
     
     def __exit__(self, *args):

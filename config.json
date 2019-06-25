@@ -1,7 +1,6 @@
 {
     "servers": {
         "CHUNK SERVER": {
-            "name": "chunk server",
             "workdir": "D:/chunk_server_pc_mobile/lagtchunksvr/Debug",
             "exefile": "D:/chunk_server_pc_mobile/lagtchunksvr/Debug/LaGtChunkSvrDC.exe",
             "logfile": "D:/projects/TCYEndManager/logs/ChunkServer.log",
@@ -11,16 +10,16 @@
             "projectdir": "D:/chunk_server_pc_mobile/lagtchunksvr"
         },
         "ASSIST SERVER": {
-            "name": "assist server",
             "workdir": "D:/chunk_server_pc_mobile/lagtassitsvr/Debug",
             "exefile": "D:/chunk_server_pc_mobile/lagtassitsvr/Debug/LaGtAssitSvrcd.exe",
             "logfile": "D:/projects/TCYEndManager/logs/AssistServer.log",
             "isWindowExpected": "yes",
             "isCompileEnable": "yes",
-            "projectdir": "D:/chunk_server_pc_mobile/lagtassitsvr"
+            "projectdir": "D:/chunk_server_pc_mobile/lagtassitsvr",
+			"comments": ["ASSIST SERVER may startup fail when use quick launch function",
+			             "if only one line log appears, please restart ASSIST SERVER and ASSIST PROXY SERVER manully"]
         },
         "ASSIST PROXY SERVER": {
-            "name": "assist proxy server",
             "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
             "exefile": "D:/chunk_server_pc_mobile/mpsvr/debug/assistmpsvr.exe",
             "logfile": "D:/projects/TCYEndManager/logs/AssistProxyServer.log",
@@ -29,7 +28,6 @@
             "projectdir": ""
         },
         "GAME SERVER": {
-            "name": "game server",
             "workdir": "D:/DGT_Server/gamesvr/Debug/",
             "exefile": "D:/DGT_Server/gamesvr/Debug/lagpsvr.exe",
             "logfile": "D:/projects/TCYEndManager/logs/GameServer.log",
@@ -38,7 +36,6 @@
             "projectdir": "D:/DGT_Server/gamesvr"
         },
         "GAME PROXY SERVER": {
-            "name": "game proxy server",
             "workdir": "D:/chunk_server_pc_mobile/mpsvr/debug",
             "exefile": "D:/chunk_server_pc_mobile/mpsvr/debug/lagtmpsvr.exe",
             "configfile": "lagtmpsvr.ini",
@@ -48,7 +45,6 @@
             "projectdir": ""
         },
         "ROOM SERVER": {
-            "name": "room server",
             "workdir": "D:/DGT_Server/roomsvrlagp/Debug",
             "exefile": "D:/DGT_Server/roomsvrlagp/Debug/roomsvrlagpD.exe",
             "logfile": "D:/projects/TCYEndManager/logs/RoomServer.log",
@@ -58,7 +54,6 @@
             "projectdir": ""
         },
         "ROOM PROXY SERVER": {
-            "name": "room proxy server",
             "workdir": "D:/roommpsvr",
             "exefile": "D:/roommpsvr/roommpsvrlagp.exe",
             "logfile": "D:/projects/TCYEndManager/logs/RoomProxyServer.log",
@@ -106,6 +101,6 @@
             "compilemode": "Debug",
             "logfile": "D:/projects/TCYEndManager/logs/compile.log"
         },
-        "quickLaunchServers": ["CHUNK SERVER", "ASSIST SERVER", "ASSIST PROXY SERVER", "GAME SERVER", "GAME PROXY SERVER", "ROOM SERVER", "ROOM PROXY SERVER"]
+        "quickLaunchServers": ["CHUNK SERVER", "GAME SERVER", "GAME PROXY SERVER", "ROOM SERVER", "ROOM PROXY SERVER", "ASSIST SERVER", "ASSIST PROXY SERVER"]
     }
 }
