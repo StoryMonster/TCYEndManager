@@ -26,6 +26,8 @@ class MainWindow(Tk):
         self.controler = controler
         self.menu.registerOtherItems("清空全部窗口", self._onClearWindows)
         self.menu.registerOtherItems("停止全部进程", self._onStopControler)
+        if "quickLaunchServers" in self.others:
+            self.menu.registerOtherItems("服务器一键启动", self._onQuickLaunchServers)
         self.menu.registerBuilderCallback(self._onClickServerBuilders)
         self.menu.registerClientsCallback(self._onClickClients)
         self.menu.registerServersCallback(self._onClickServers)
@@ -80,4 +82,13 @@ class MainWindow(Tk):
     def _rightClick(self, event):
         if self.popup_menu is None: return
         self.popup_menu.post(event.x_root, event.y_root)
-        
+
+    def _quickLaunchServersPrecheck(self):
+        return True
+
+    def _onQuickLaunchServers(self):
+        if not self._quickLaunchServersPrecheck(): return
+        for serverName in self.others["quickLaunchServers"]:
+            if self.menu.serversMenu.getServerButtonStatus(serverName) == "selected":
+                self.menu.serversMenu.clickServer(serverName)
+            self.menu.serversMenu.clickServer(serverName)
