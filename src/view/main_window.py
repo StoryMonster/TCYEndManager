@@ -7,6 +7,7 @@ class MainWindow(Tk):
     def __init__(self, servers, clients, others={}):
         Tk.__init__(self)
         self.title("同城游 管理工具")
+        self.iconbitmap("res/head.ico")
         self.servers = servers
         self.clients = clients
         self.others = others
