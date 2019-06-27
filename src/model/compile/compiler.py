@@ -2,7 +2,6 @@ import subprocess
 import os
 import re
 import time
-from model.common.file_writer import FileWriter
 from model.common.file_reader import FileReader
 
 def getProjectKeyFiles(projectdir):
@@ -34,7 +33,6 @@ class ServerCompiler(object):
         self.proc = None
         self.serverName = serverName
         self.logfile = os.path.abspath(self.compilerContext["logfile"])
-        self.fileReader = FileReader(self.logfile)
 
     def stop(self):
         if self.proc is not None:
@@ -43,9 +41,6 @@ class ServerCompiler(object):
             except PermissionError:
                 self.wnd.warn("未能成功结束进程："+self.serverName)
             self.proc = None
-        if self.fileReader is not None:
-            self.fileReader.close()
-            self.fileReader = None
 
     def __exit__(self, *args):
         self.stop()
@@ -71,5 +66,5 @@ class ServerCompiler(object):
         cmd = f'scripts\\compiler.bat "{vcvarsall}" "{projectdir}" "{sln}" "{buildmode}" "{vcxproj}" "{self.logfile}"'
         self.proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
         self.proc.wait()
-        self.wnd.writelines(self.fileReader.readlines())
+        self.wnd.writelines(FileReader(self.logfile).readlines())
         self.wnd.info("编译完成，详细编译日志: {logfile}\n".format(logfile=self.logfile))
