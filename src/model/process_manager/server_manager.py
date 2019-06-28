@@ -78,6 +78,17 @@ class ServerManager(object):
             self.logWnd.error("进程 {} 无法启动".format(self.name))
             return False
 
+    def _launchSubprocess(self, cmd):
+        import sys
+        if sys.version_info.major == 2:
+            self.logWnd.error("不再支持Python 3.0以下版本")
+            return None
+        if sys.version_info.minor <= 5:
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            return subprocess.Popen(cmd, stdout=self.fileWriter, stderr=self.fileWriter, startupinfo=startupinfo)
+        else: return subprocess.Popen(cmd, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NEW_CONSOLE)
+
     def run(self):
         if not self._precheck(): return
         if not self._startupLogEnvironment(): return
@@ -85,6 +96,7 @@ class ServerManager(object):
         cwd = os.getcwd()
         os.chdir(workdir)
         exename = self.context["exefile"]
-        self.proc = subprocess.Popen(exename, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
+        self.proc = self._launchSubprocess(exename)
         os.chdir(cwd)
+        if self.proc is None: return
         self.logWnd.info("进程 {} 正在运行".format(exename))

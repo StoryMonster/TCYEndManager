@@ -49,6 +49,7 @@ class MainWindow(Tk):
         self.commonWindow = self.dispAreas["Common Window"]
         counter = 0
         for name in self.dispAreas:
+            print(name)
             if counter % 3 == 0:
                 self.rowconfigure(int(counter/3), weight=1)
             self.dispAreas[name].grid(row=int(counter/3), column=counter%3, sticky="NSEW")

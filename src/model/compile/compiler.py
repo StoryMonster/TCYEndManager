@@ -56,6 +56,14 @@ class ServerCompiler(object):
             return False
         return True
 
+    def _launchSubprocess(self, cmd):
+        import sys
+        if sys.version_info.major < 3:
+            self.wnd.error("不再支持Python 3.0以下版本")
+            return None
+        if sys.version_info.minor <= 5: return subprocess.Popen(cmd)
+        else: return subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
+
     def run(self):
         if not self._precheck(): return
         self.wnd.info("开始编译："+self.serverName)
@@ -63,8 +71,10 @@ class ServerCompiler(object):
         projectdir = self.server["projectdir"]
         sln, vcxproj = getProjectKeyFiles(projectdir)
         buildmode =  recorgnizeBuildMode(self.compilerContext["compilemode"])
-        cmd = f'scripts\\compiler.bat "{vcvarsall}" "{projectdir}" "{sln}" "{buildmode}" "{vcxproj}" "{self.logfile}"'
-        self.proc = subprocess.Popen(cmd, creationflags=subprocess.CREATE_NEW_CONSOLE)
+        cmd = 'scripts\\compiler.bat "{}" "{}" "{}" "{}" "{}" "{}"'.format(vcvarsall, projectdir, sln, buildmode, vcxproj, self.logfile)
+        self.proc = self._launchSubprocess(cmd)
+        if self.proc is None:
+            return
         self.proc.wait()
         self.wnd.writelines(FileReader(self.logfile).readlines())
         self.wnd.info("编译完成，详细编译日志: {logfile}\n".format(logfile=self.logfile))

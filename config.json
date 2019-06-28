@@ -93,23 +93,23 @@
             "script": "D:/lagt",
             "isWindowExpected": "no"
         },
-		"CLIENT4": {
+		"CLIENT8": {
             "id": "",
             "password": "",
-            "configFile": "D:/projects/TCYEndManager/res/client_configurations/windows_player_4.ini",
+            "configFile": "D:/projects/TCYEndManager/res/client_configurations/windows_player_8.ini",
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
             "logfile": "D:/projects/TCYEndManager/logs/client4.log",
             "script": "D:/lagt",
             "isWindowExpected": "no"
         },
-		"CLIENT5": {
+		"CLIENT9": {
             "id": "",
             "password": "",
-            "configFile": "D:/projects/TCYEndManager/res/client_configurations/windows_player_5.ini",
+            "configFile": "D:/projects/TCYEndManager/res/client_configurations/windows_player_9.ini",
             "simulator": "D:/CLIENT/Win32/runtime/MCRuntime.exe",
             "workdir": "D:/CLIENT/Win32/runtime",
-            "logfile": "D:/projects/TCYEndManager/logs/client5.log",
+            "logfile": "D:/projects/TCYEndManager/logs/client9.log",
             "script": "D:/lagt",
             "isWindowExpected": "no"
         }
