@@ -58,9 +58,9 @@ class ServerManager(object):
         if self.isRunning():
             self.logWnd.error(self.name + " 还在运行中")
             return False
-        workdir = self.context["workdir"]
-        if not os.path.exists(workdir):
-            self.logWnd.error("工作空间 {} 不存在".format(workdir))
+        rundir = self.context["rundir"]
+        if not os.path.exists(rundir):
+            self.logWnd.error("执行路径 {} 不存在".format(rundir))
             return False
         exefile = self.context["exefile"]
         if not os.path.isfile(exefile):
@@ -92,9 +92,9 @@ class ServerManager(object):
     def run(self):
         if not self._precheck(): return
         if not self._startupLogEnvironment(): return
-        workdir = self.context["workdir"]
+        rundir = self.context["rundir"]
         cwd = os.getcwd()
-        os.chdir(workdir)
+        os.chdir(rundir)
         exename = self.context["exefile"]
         self.proc = self._launchSubprocess(exename)
         os.chdir(cwd)

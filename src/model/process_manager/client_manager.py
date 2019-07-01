@@ -52,9 +52,9 @@ class ClientManager(object):
         if self.isRunning():
              self.logWnd.error(self.name+" 还在运行中")
              return False
-        workdir = self.context["workdir"]
-        if not os.path.isdir(workdir):
-            self.logWnd.error("工作路径不存在: "+workdir)
+        rundir = self.context["rundir"]
+        if not os.path.isdir(rundir):
+            self.logWnd.error("执行路径不存在: "+rundir)
             return False
         simulator, configFile = self.context["simulator"], self.context["configFile"]
         if (not os.path.isfile(simulator)) or (not os.path.isfile(configFile)):
@@ -86,9 +86,9 @@ class ClientManager(object):
     def run(self):
         if not self._precheck(): return
         if not self._startupLogEnvironment(): return
-        workdir = self.context["workdir"]
+        rundir = self.context["rundir"]
         cwd = os.getcwd()
-        os.chdir(workdir)
+        os.chdir(rundir)
         simulator, configFile = self.context["simulator"], self.context["configFile"]
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
