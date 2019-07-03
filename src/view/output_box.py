@@ -17,10 +17,12 @@ class OutputBox(Frame):
         self.popupMenu = OutputBoxPopupMenu(self.textArea)
         self.popupMenu.register("清空", self.clear)
         self.textArea.bind("<Button-3>", self._rightClick)
+        self.textLength = 0
 
     def write(self, text):
         self.textArea.insert("end", text)
         self.textArea.see("end")
+        self._increseWrittenTextLength(len(text))
 
     def writeline(self, text):
         self.write(text+"\n")
@@ -45,9 +47,15 @@ class OutputBox(Frame):
 
     def clear(self):
         self.textArea.delete(1.0, "end")
+        self.textLength = 0
 
     def comment(self, text):
         self.writeLineWithTag("[COMMENT] " + text, "COMMENT_TEXT")
 
     def _rightClick(self, event):
         self.popupMenu.show(event.x_root, event.y_root)
+
+    def _increseWrittenTextLength(self, length):
+        self.textLength += length
+        if self.textLength > 10000:
+            self.clear()
