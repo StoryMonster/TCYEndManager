@@ -57,5 +57,5 @@ class OutputBox(Frame):
 
     def _increseWrittenTextLength(self, length):
         self.textLength += length
-        if self.textLength > 10000:
+        if self.textLength > 100 * 1024:
             self.clear()

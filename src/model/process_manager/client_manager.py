@@ -93,7 +93,7 @@ class ClientManager(object):
         VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
         shutil.copy(configFile, VALID_CONFIG_FILE)
         scriptPath = self.context["script"]
-        self.proc = self._launchSubprocess("{} {}".format(simulator, scriptPath))
+        self.proc = self._launchSubprocess("{} -console disable -workdir {}".format(simulator, scriptPath))
         os.chdir(cwd)
         if self.proc is None: return
         self.logWnd.info("进程 {} 开始运行".format(self.name))
