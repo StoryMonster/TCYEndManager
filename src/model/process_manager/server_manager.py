@@ -3,7 +3,6 @@ import subprocess
 from model.common.file_reader import FileReader
 from model.common.file_writer import FileWriter
 
-
 class ServerManager(object):
     def __init__(self, name, context, logWnd):
         self.name = name
@@ -54,6 +53,20 @@ class ServerManager(object):
             for line in self.context["comments"]:
                 self.logWnd.comment(line)
 
+    def _unique_check(self):
+        try:
+            import psutil
+            exefile = self.context["exefile"]
+            exefile = exefile if "/" not in exefile else exefile[exefile.rfind("/")+1:]
+            for proc in psutil.process_iter():
+                if proc.name() == exefile:
+                    self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程".format(exefile))
+                    return False
+            return True
+        except ImportError:
+            self.logWnd.warn("psutil包不存在，将不会检查是否已经有该程序在执行。可在控制台执行pip install psutil安装")
+            return True
+
     def _precheck(self):
         if self.isRunning():
             self.logWnd.error(self.name + " 还在运行中")
@@ -66,7 +79,7 @@ class ServerManager(object):
         if not os.path.isfile(exefile):
             self.logWnd.error(exefile+" 不存在!")
             return False
-        return True
+        return self._unique_check() if self.context["isUniqueCheckExpected"] == "yes" else True
 
     def _startupLogEnvironment(self):
         try:
