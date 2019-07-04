@@ -30,6 +30,7 @@
 <p>isWindowExpected: 是否希望在软件中为该server单独配置一个显示窗口，如果为no，则该server的输出将打印在公共窗口上<br>
 <p>isCompileEnabled: 是否允许对该server进行重新编译，如果yes, projectdir就需要填写，否则，projectdir不需要<br>
 <p>projectdir: 工程目录，该目录下必须存在相应的sln文件和vcxproj文件<br>
+<p>isUniqueCheckExpected: 检查系统中是否有该程序进程存在，如果存在，就不能启动该服务进程，需杀死原本存在的进程。要用此功能需要安装python模块psutil，否则此处设置将无效
 
 <h5>clients</h5>
 <p>现阶段只支持使用MCRuntime.exe启动移动端

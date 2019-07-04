@@ -60,7 +60,7 @@ class ServerManager(object):
             exefile = exefile if "/" not in exefile else exefile[exefile.rfind("/")+1:]
             for proc in psutil.process_iter():
                 if proc.name() == exefile:
-                    self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程".format(exefile))
+                    self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程(pid: {})".format(exefile, proc.pid))
                     return False
             return True
         except ImportError:
