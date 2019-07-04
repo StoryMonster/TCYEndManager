@@ -55,10 +55,10 @@ class ServerManager(object):
 
     def _unique_check(self):
         try:
-            import psutil
+            from psutil import process_iter
             exefile = self.context["exefile"]
             exefile = exefile if "/" not in exefile else exefile[exefile.rfind("/")+1:]
-            for proc in psutil.process_iter():
+            for proc in process_iter():
                 if proc.name() == exefile:
                     self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程(pid: {})".format(exefile, proc.pid))
                     return False
