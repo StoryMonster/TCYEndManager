@@ -1,11 +1,23 @@
 from tkinter import Label, Scrollbar, Frame, scrolledtext, Menu
 from tkinter import HORIZONTAL, VERTICAL, BOTTOM, X, RIGHT, Y, BOTH, TOP
 from .menus.output_box_popup_menu import OutputBoxPopupMenu
+import os
 
 class OutputBox(Frame):
-    def __init__(self, parent=None, boxName=""):
+    def __init__(self, parent=None, boxName="", process_path=""):
         Frame.__init__(self, parent, bg="grey")
-        Label(self, text=boxName).pack(fill=X, expand=False)
+        self.name = boxName
+        self._ui_config()
+        self.textLength = 0
+        self.process_path = process_path
+        self.run_dir = "."
+        if os.path.isfile(process_path):
+            abspath = os.path.abspath(process_path)
+            self.info(abspath)
+            self.run_dir = os.path.dirname(abspath)
+
+    def _ui_config(self):
+        Label(self, text=self.name).pack(fill=X, expand=False)
         xScrollarBar = Scrollbar(self, orient=HORIZONTAL)
         xScrollarBar.pack(side=BOTTOM, fill=X)
         self.textArea = scrolledtext.ScrolledText(self, bd=5, wrap="none", xscrollcommand=xScrollarBar.set)
@@ -16,8 +28,8 @@ class OutputBox(Frame):
         self.textArea.tag_configure("COMMENT_TEXT", background="blue", foreground="white")
         self.popupMenu = OutputBoxPopupMenu(self.textArea)
         self.popupMenu.register("清空", self.clear)
-        self.textArea.bind("<Button-3>", self._rightClick)
-        self.textLength = 0
+        self.popupMenu.register("打开进程运行路径", self._open_process_running_dir)
+        self.textArea.bind("<ButtonPress-3>", self._rightClick)
 
     def write(self, text):
         self.textArea.insert("end", text)
@@ -53,9 +65,13 @@ class OutputBox(Frame):
         self.writeLineWithTag("[COMMENT] " + text, "COMMENT_TEXT")
 
     def _rightClick(self, event):
-        self.popupMenu.show(event.x_root, event.y_root)
+        if self.popupMenu is None or event.widget != self.textArea: return
+        self.popupMenu.post(event.x_root, event.y_root)
 
     def _increseWrittenTextLength(self, length):
         self.textLength += length
         if self.textLength > 100 * 1024:
             self.clear()
+
+    def _open_process_running_dir(self):
+        os.system("explorer {}".format(self.run_dir))

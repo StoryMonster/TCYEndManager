@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<TCYEndManager>
+   <servers>
+    <instances>
+      <chunkserver exe_file="D:\chunk_server_pc_mobile\lagtchunksvr\Debug\LaGtChunkSvrDC.exe" is_window_expected="yes"></chunkserver>
+      <assistserver exe_file="D:\chunk_server_pc_mobile\lagtassitsvr\Debug\LaGtAssitSvrcd.exe" is_window_expected="yes"></assistserver>
+      <assistmpserver exe_file="D:\chunk_server_pc_mobile\mpsvr\debug\assistmpsvr.exe" is_window_expected="no"></assistmpserver>
+      <gameserver exe_file="D:\DGT_Server\gamesvr\Debug\lagpsvr.exe" is_window_expected="yes"></gameserver>
+      <gamempserver exe_file="D:\chunk_server_pc_mobile\mpsvr\debug\lagtmpsvr.exe" is_window_expected="no"></gamempserver>
+      <roomserver exe_file="D:\DGT_Server\roomsvrlagp\Debug\roomsvrlagpD.exe" is_window_expected="no"></roomserver>
+      <roommpserver exe_file="D:\roommpsvr\roommpsvrlagp.exe" is_window_expected="no"></roommpserver>
+    </instances>
+    <compiler compile_env_config_file="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat" compile_enabled_servers="chunkserver;assistserver;gameserver"></compiler>
+    <quick_launch_servers launch_queue="chunkserver;assistserver;assistmpserver;gameserver;gamempserver;roomserver;roommpserver"></quick_launch_servers>
+  </servers>
+  <clients>
+    <instances>
+      <client1 account="dochen_in_1" password="in123456" is_console_expected="no"></client1>
+      <client2 account="dochen_in_2" password="in123456" is_console_expected="no"></client2>
+      <client3 account="dochen_in_3" password="in123456" is_console_expected="no"></client3>
+      <client4 account="dochen_in_4" password="in123456" is_console_expected="no"></client4>
+      <client5 account="dochen_in_5" password="in123456" is_console_expected="no"></client5>
+    </instances>
+    <simulator path="D:\CLIENT\Win32\runtime\MCRuntime.exe" script="D:\lagt"></simulator>
+  </clients>
+</TCYEndManager>

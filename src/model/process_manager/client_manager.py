@@ -5,16 +5,23 @@ from model.common.file_reader import FileReader
 from model.common.file_writer import FileWriter
 
 class ClientManager(object):
-    def __init__(self, name, context, logWnd):
+    def __init__(self, name, context, others, logWnd):
         self.name = name
         self.context = context
+        self.script_path = others["simulator"]["script"]
+        self.simulator = others["simulator"]["path"]
+        self.run_dir = os.path.dirname(os.path.abspath(self.simulator))
+        self.account = context["account"]
+        self.password = context["password"]
+        self.config_file = os.path.join(self.run_dir, "windows.ini")
+        self.is_console_expected = context["is_console_expected"].lower() == "yes"
         self.logWnd = logWnd
         self.fileWriter = None
         self.fileReader = None
-        self.logfile = context["logfile"]
+        self.logfile = os.path.join(others["logdir"], "{}.log".format(name))
         self.proc = None
 
-    def __exit__(self, *args):
+    def __del__(self, *args):
         self.close()
 
     def close(self):
@@ -52,13 +59,11 @@ class ClientManager(object):
         if self.isRunning():
              self.logWnd.error(self.name+" 还在运行中")
              return False
-        rundir = self.context["rundir"]
-        if not os.path.isdir(rundir):
-            self.logWnd.error("执行路径不存在: "+rundir)
+        if not os.path.isdir(self.run_dir):
+            self.logWnd.error("执行路径不存在: "+self.run_dir)
             return False
-        simulator, configFile = self.context["simulator"], self.context["configFile"]
-        if (not os.path.isfile(simulator)) or (not os.path.isfile(configFile)):
-            self.logWnd.error("模拟器 {} 或者配置文件 {} 不存在!".format(simulator, configFile))
+        if (not os.path.isfile(self.simulator)) or (not os.path.isfile(self.config_file)):
+            self.logWnd.error("模拟器 {} 或者配置文件 {} 不存在!".format(self.simulator, self.config_file))
             return False
         return True
 
@@ -75,25 +80,42 @@ class ClientManager(object):
     def _launchSubprocess(self, cmd):
         import sys
         if sys.version_info.major == 2:
-            self.logWnd.error("不再支持Python 3.0以下版本")
+            self.logWnd.error("不再支持Python 2.x")
             return None
-        if sys.version_info.minor <= 5:
+        if sys.version_info.minor <= 6:
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             return subprocess.Popen(cmd, stdout=self.fileWriter, stderr=self.fileWriter, startupinfo=startupinfo)
         else: return subprocess.Popen(cmd, stdout=self.fileWriter, stderr=self.fileWriter, creationflags=subprocess.CREATE_NO_WINDOW)
 
+    def _write_client_information_into_config_file(self):
+        lines = []
+        with open(self.config_file, "r", encoding="utf-8") as fd:
+            lines = fd.readlines()
+        is_read_user_info = False
+        NECCESSARY_USER_INFO_ITEM_NUM = 2
+        modified_user_info_item_num = 0
+        for i in range(len(lines)):
+            if lines[i].rstrip() == "[user]":
+                is_read_user_info = True
+                continue
+            if is_read_user_info:
+                if lines[i].find("name=") == 0:
+                    lines[i] = "name=" + self.account
+                    modified_user_info_item_num += 1
+                elif lines[i].find("password=") == 0:
+                    lines[i] = "password=" + self.password
+                    modified_user_info_item_num += 1
+                if NECCESSARY_USER_INFO_ITEM_NUM == modified_user_info_item_num: break
+        FileWriter(self.config_file, encoding="utf-8").writelines(lines)
+
     def run(self):
         if not self._precheck(): return
         if not self._startupLogEnvironment(): return
-        rundir = self.context["rundir"]
+        self._write_client_information_into_config_file()
         cwd = os.getcwd()
-        os.chdir(rundir)
-        simulator, configFile = self.context["simulator"], self.context["configFile"]
-        VALID_CONFIG_FILE = simulator[:simulator.rfind("/")+1] + "windows.ini"
-        shutil.copy(configFile, VALID_CONFIG_FILE)
-        scriptPath = self.context["script"]
-        self.proc = self._launchSubprocess("{} -console disable -workdir {}".format(simulator, scriptPath))
+        os.chdir(self.run_dir)
+        self.proc = self._launchSubprocess("{} {} -workdir {}".format(self.simulator, "" if self.is_console_expected else "-console disable", self.script_path))
         os.chdir(cwd)
         if self.proc is None: return
         self.logWnd.info("进程 {} 开始运行".format(self.name))

@@ -16,5 +16,9 @@ class FileWriter(object):
     def write(self, content):
         self.fd.write(content)
 
+    def writelines(self, lines):
+        for line in lines:
+            self.write(line.rstrip()+"\n")
+
     def fileno(self):
         return self.fd.fileno()

@@ -6,49 +6,51 @@
 </head>
 
 </body>
-<h4>环境依赖</h4>
+<h3>环境依赖</h3>
 <li>python 3.x with tkinter installed</li>
 <li>windows x86_64</li>
 
-<h4>启动方式（两种启动方式没有区别）</h4>
+<h3>启动方式（两种启动方式没有区别）</h3>
 <li>运行 TCYServersManager.bat 启动</li>
 <li>运行 TCYServersManager.ps1 启动</li>
 
-<h4>功能</h4>
+<h3>功能</h3>
 <li>控制服务器启动</li>
 <li>控制移动端模拟器启动</li>
 <li>快捷编译服务端程序</li>
 
-<h4>配置文件</h4>
-<p>此软件需要配合json格式的配置文件一起启动，现阶段三大模块(serves, clients, others)缺一不可
-<h5>servers</h5>
+<h3>配置文件 config.xml</h3>
+<h4>servers</h4>
 <p>使用者可以根据自己的需求按照类似格式添加server，server各属性字段讲解如下：<br>
-<p>rundir: server运行的路径，即该路径下要包含有server启动的所有相关配置<br>
-<p>exefile: server可执行文件路径<br>
-<p>logfile: server运行期间的log文件<br>
-<p>comments: 在server运行前希望提醒使用者的语句<br>
-<p>isWindowExpected: 是否希望在软件中为该server单独配置一个显示窗口，如果为no，则该server的输出将打印在公共窗口上<br>
-<p>isCompileEnabled: 是否允许对该server进行重新编译，如果yes, projectdir就需要填写，否则，projectdir不需要<br>
-<p>projectdir: 工程目录，该目录下必须存在相应的sln文件和vcxproj文件<br>
-<p>isUniqueCheckExpected: 检查系统中是否有该程序进程存在，如果存在，就不能启动该服务进程，需杀死原本存在的进程。要用此功能需要安装python模块psutil，否则此处设置将无效
+<p>compiler[optional]: 编译server所要求的编译环境，当前只支持Visual Stuido的vcvars*.bat
+<li>compile_env_config_file: Visual Studio的vcvars*.bat文件</li>
+<li>compile_enabled_servers: 支持编译的server，server名用分号分隔开，不要插入额外空格</li>
+<p>quick_launch_servers: 一键启动服务器</p>
+<li>launch_queue: 服务器的启动队列，名称用分号隔开，不要插入额外空格</li>
+<p>instances: 具体的服务器实例
+<li>exe_file: 可执行文件路径，要求所有启动相关配置文件都要和它在同一目录</li>
+<li>is_window_expected: 是否为此服务器开启窗口</li>
 
-<h5>clients</h5>
-<p>现阶段只支持使用MCRuntime.exe启动移动端
-<p>id: 保留，未使用
-<p>password: 保留，未使用
-<p>configFile: 客户端启动时的配置文件，在客户端启动时，该文件内容将被复制到MCRuntime目录下的windows.ini中，所以最好对原始windows.ini做好备份
-<p>simulator: MCRuntime.exe的绝对路径
-<p>logfile: 客户端运行日志
-<p>script: 客户端程序
-<p>isWindowExpected: 是否需要为该客户端单独开辟一个输出窗口
+<h4>clients</h4>
+<p>simulator[mandantory]:
+<li>path: 移动端模拟器路径</li>
+<li>script: 移动端的逻辑代码</li>
+<p>instances: 具体的clients实例
+<li>is_console_expected: 是否希望在模拟器运行时为该client实例显示log控制台</li>
+<li>account: 同城游账号</li>
+<li>password: 同城游密码</li>
 
-<h5>others</h5>
-<p>compiler: 只有当配置了compiler之后，才支持使用编译功能，只支持编译Visual Studio工程
-<p>quickLaunchServers: 只有当配置了quickLaunchServers之后，才支持使用快速启动服务器功能，列表中服务器名称需要<font color=red>按照启动顺序排列</font>
-
-<h4>注意事项</h4>
-<li>按照自己的实际环境修改config.ini</li>
-<li>config.ini中所有路径使用绝对路径，不要使用中文</li>
+<h3>注意事项</h3>
+<li>按照自己的实际环境修改config.xml</li>
+<li>config.xml中所有路径使用绝对路径</li>
 <li>如果本地powershell运行脚本权限未开启，可以选择使用TCYServersManager.bat启动</li>
 </body>
 </html>
+
+<h3>版本特色</h3>
+<li>精简配置文件，使用户使用更简便，但是相对增加了对用户本地环境的要求</li>
+<li>服务器运行前会先检查系统中是否有相同进程存在，强制每个服务器单例运行</li>
+<li>支持路径中使用“\”，拷贝地址时不用做额外修改</li>
+<li>只有开启窗口的进程的运行log会被显示在窗口中，其他进程（除了编译）的log将不在Common Window中显示</li>
+<li>开启窗口的进程支持右键跳转到运行目录，方便提取运行log</li>
+<li>优化了使用中的一些影响体验的功能模块</li>

@@ -18,7 +18,7 @@ class MainWindow(Tk):
         self.dispAreas = {}
         self.controler = None
         self._deploy_display_windows()
-        self.bind("<Button-3>", self._rightClick)
+        self.bind("<ButtonPress-3>", self._rightClick)
 
     def run(self):
         self.mainloop()
@@ -27,7 +27,7 @@ class MainWindow(Tk):
         self.controler = controler
         self.menu.registerOtherItems("清空全部窗口", self._onClearWindows)
         self.menu.registerOtherItems("停止全部进程", self._onStopControler)
-        if "quickLaunchServers" in self.others:
+        if "quick_launch_servers" in self.others:
             self.menu.registerOtherItems("服务器一键启动", self._onQuickLaunchServers)
         self.menu.registerBuilderCallback(self._onClickServerBuilders)
         self.menu.registerClientsCallback(self._onClickClients)
@@ -36,23 +36,32 @@ class MainWindow(Tk):
         self.protocol("WM_DELETE_WINDOW", self._onMainWindowClose)
 
     def _deploy_display_windows(self):
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
+        window_num = 1
         for server in self.servers:
-            if server in self.dispAreas or self.servers[server]["isWindowExpected"] == "no": continue
-            self.dispAreas[server] = OutputBox(self, server)
-        for client in self.clients:
-            if client in self.dispAreas or self.clients[client]["isWindowExpected"] == "no": continue
-            self.dispAreas[client] = OutputBox(self, client)
-        self.dispAreas["Common Window"] =  OutputBox(self, "Common Window")
+            if self.servers[server]["is_window_expected"] == "yes":
+                self.dispAreas[server] = OutputBox(self, server, self.servers[server]["exe_file"])
+                window_num += 1
+        self.dispAreas["Common Window"] =  OutputBox(self, "Common Window", "")
         self.commonWindow = self.dispAreas["Common Window"]
-        counter = 0
-        for name in self.dispAreas:
-            if counter % 3 == 0:
-                self.rowconfigure(int(counter/3), weight=1)
-            self.dispAreas[name].grid(row=int(counter/3), column=counter%3, sticky="NSEW")
-            counter += 1
+        if window_num == 1:
+            self.commonWindow.pack(fill=BOTH, expand=1)
+        elif window_num == 2 or window_num == 4:
+            self.columnconfigure(0, weight=1)
+            self.columnconfigure(1, weight=1)
+            counter = 0
+            for name in self.dispAreas:
+                if counter % 2 == 0: self.rowconfigure(int(counter/2), weight=1)
+                self.dispAreas[name].grid(row=int(counter/2), column=counter%2, sticky="NSEW")
+                counter += 1
+        else:
+            self.columnconfigure(0, weight=1)
+            self.columnconfigure(1, weight=1)
+            self.columnconfigure(2, weight=1)
+            counter = 0
+            for name in self.dispAreas:
+                if counter % 3 == 0: self.rowconfigure(int(counter/3), weight=1)
+                self.dispAreas[name].grid(row=int(counter/3), column=counter%3, sticky="NSEW")
+                counter += 1
 
     def _onMainWindowClose(self):
         self.controler.close()
@@ -81,15 +90,11 @@ class MainWindow(Tk):
         self.controler.compileServer(serverName)
 
     def _rightClick(self, event):
-        if self.popup_menu is None: return
+        if self.popup_menu is None or event.widget != self: return
         self.popup_menu.post(event.x_root, event.y_root)
 
-    def _quickLaunchServersPrecheck(self):
-        return True
-
     def _onQuickLaunchServers(self):
-        if not self._quickLaunchServersPrecheck(): return
-        for serverName in self.others["quickLaunchServers"]:
+        for serverName in self.others["quick_launch_servers"]["launch_queue"].split(";"):
             if self.menu.serversMenu.getServerButtonStatus(serverName) == "selected":
                 self.menu.serversMenu.clickServer(serverName)
             self.menu.serversMenu.clickServer(serverName)

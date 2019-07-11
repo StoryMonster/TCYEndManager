@@ -30,13 +30,13 @@ class Controler(object):
         if self.procManagers[serverName] is not None and self.procManagers[serverName].isRunning():
             self.view.commonWindow.warn("当服务器运行时，不应该重新编译该服务器，编译进程将不会启动")
             return
-        self.runningCompiler = ServerCompiler(serverName, self.servers[serverName], self.others["compiler"], self.view.commonWindow)
+        self.runningCompiler = ServerCompiler(serverName, self.servers[serverName], self.others, self.view.commonWindow)
         self.runningCompiler.run()
 
     def _syncLogBetweenScreenAndFile(self):
         while self.isSyncLogExpected:
             for procName in self.procManagers:
-                if self.procManagers[procName] is None: continue
+                if self.procManagers[procName] is None or procName not in self.view.dispAreas: continue
                 self.procManagers[procName].syncLogToScreenFromFile()
             if self.runningCompiler is not None and self.runningCompiler.isRunning():
                 self.runningCompiler.syncLogToScreenFromFile()
@@ -46,10 +46,9 @@ class Controler(object):
         self.view = view
         for server in self.servers:
             winHandler = view.dispAreas[server] if server in view.dispAreas else view.commonWindow
-            self.procManagers[server] = create_process_manager(server, ProcessType.ServerProcess, self.servers[server], winHandler)
+            self.procManagers[server] = create_process_manager(server, ProcessType.ServerProcess, self.servers[server], self.others, winHandler)
         for client in self.clients:
-            winHandler = view.dispAreas[client] if client in view.dispAreas else view.commonWindow
-            self.procManagers[client] = create_process_manager(client, ProcessType.ClientProcess, self.clients[client], winHandler)
+            self.procManagers[client] = create_process_manager(client, ProcessType.ClientProcess, self.clients[client], self.others, view.commonWindow)
         self.syncLogThread.start()    
 
     def closeAllProcesses(self):

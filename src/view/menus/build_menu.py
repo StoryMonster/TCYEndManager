@@ -7,7 +7,6 @@ class BuildMenu(Menu):
         self.callback = None
         self.servers = servers
         for serverName in self.servers:
-            if self.servers[serverName]["isCompileEnable"].lower() == "no": continue
             self._add_item(serverName)
             
     

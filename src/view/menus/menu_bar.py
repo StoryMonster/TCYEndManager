@@ -9,7 +9,7 @@ class MenuBar(Menu):
         Menu.__init__(self, parent)
         self.buildMenu = None
         if "compiler" in others:
-            self.buildMenu = BuildMenu(self, servers)
+            self.buildMenu = BuildMenu(self, others["compiler"]["compile_enabled_servers"].split(";"))
             self.add_cascade(label="构建", menu=self.buildMenu)
         self.clientsMenu = ClientsControlMenu(self, clients)
         self.serversMenu = ServersControlMenu(self, servers)

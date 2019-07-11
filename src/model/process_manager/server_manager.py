@@ -4,17 +4,17 @@ from model.common.file_reader import FileReader
 from model.common.file_writer import FileWriter
 
 class ServerManager(object):
-    def __init__(self, name, context, logWnd):
+    def __init__(self, name, context, others, logWnd):
         self.name = name
-        self.context = context
+        self.exe_file = context["exe_file"]
+        self.run_dir = os.path.dirname(os.path.abspath( self.exe_file))
         self.logWnd = logWnd
         self.fileWriter = None
         self.fileReader = None
         self.proc = None
-        self.logfile = context["logfile"]
-        self._printServerComments()
+        self.logfile = os.path.join(others["logdir"], "{}.log".format(name))
 
-    def __exit__(self, *args):
+    def __del__(self, *args):
         self.close()
 
     def close(self):
@@ -27,7 +27,7 @@ class ServerManager(object):
         if self.fileReader is not None:
             self.fileReader.close()
             self.fileReader = None
-    
+
     def isRunning(self):
         return self.proc is not None
 
@@ -48,16 +48,11 @@ class ServerManager(object):
                 self.logWnd.warn("未能杀死进程 {} 或者该进程不存在".format(self.name))
             self.proc = None
 
-    def _printServerComments(self):
-        if "comments" in self.context:
-            for line in self.context["comments"]:
-                self.logWnd.comment(line)
-
     def _unique_check(self):
         try:
             from psutil import process_iter
-            exefile = self.context["exefile"]
-            exefile = exefile if "/" not in exefile else exefile[exefile.rfind("/")+1:]
+            exefile = self.exe_file
+            exefile = exefile if "\\" not in exefile else exefile[exefile.rfind("\\")+1:]
             for proc in process_iter():
                 if proc.name() == exefile:
                     self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程(pid: {})".format(exefile, proc.pid))
@@ -71,15 +66,13 @@ class ServerManager(object):
         if self.isRunning():
             self.logWnd.error(self.name + " 还在运行中")
             return False
-        rundir = self.context["rundir"]
-        if not os.path.exists(rundir):
-            self.logWnd.error("执行路径 {} 不存在".format(rundir))
+        if not os.path.exists(self.run_dir):
+            self.logWnd.error("执行路径 {} 不存在".format(self.run_dir))
             return False
-        exefile = self.context["exefile"]
-        if not os.path.isfile(exefile):
-            self.logWnd.error(exefile+" 不存在!")
+        if not os.path.isfile(self.exe_file):
+            self.logWnd.error(self.exe_file+" 不存在!")
             return False
-        return self._unique_check() if self.context["isUniqueCheckExpected"] == "yes" else True
+        return self._unique_check()
 
     def _startupLogEnvironment(self):
         try:
@@ -94,9 +87,9 @@ class ServerManager(object):
     def _launchSubprocess(self, cmd):
         import sys
         if sys.version_info.major == 2:
-            self.logWnd.error("不再支持Python 3.0以下版本")
+            self.logWnd.error("不再支持Python 2.x")
             return None
-        if sys.version_info.minor <= 5:
+        if sys.version_info.minor <= 6:
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             return subprocess.Popen(cmd, stdout=self.fileWriter, stderr=self.fileWriter, startupinfo=startupinfo)
@@ -105,11 +98,9 @@ class ServerManager(object):
     def run(self):
         if not self._precheck(): return
         if not self._startupLogEnvironment(): return
-        rundir = self.context["rundir"]
         cwd = os.getcwd()
-        os.chdir(rundir)
-        exename = self.context["exefile"]
-        self.proc = self._launchSubprocess(exename)
+        os.chdir(self.run_dir)
+        self.proc = self._launchSubprocess(self.exe_file)
         os.chdir(cwd)
         if self.proc is None: return
-        self.logWnd.info("进程 {} 正在运行".format(exename))
+        self.logWnd.info("进程 {} 正在运行".format(self.name))
