@@ -24,3 +24,11 @@ class ClientsControlMenu(Menu):
     def resetStatus(self):
         for name in self.clients_status:
             self.clients_status[name].set(False)
+
+    def getClientsButtonStatus(self, clientName):
+        return "selected" if self.clients_status[clientName].get() else "unselect"
+
+    def clickClient(self, name):
+        if name not in self.clients_status: return
+        self.clients_status[name].set(not self.clients_status[name].get())
+        self._onClickClient(name)

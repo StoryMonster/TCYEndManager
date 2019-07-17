@@ -2,6 +2,7 @@ from tkinter import Tk, Scrollbar
 from tkinter import X, Y, TOP, RIGHT, LEFT, HORIZONTAL, VERTICAL, BOTH, BOTTOM
 from .output_box import OutputBox
 from .menus.menu_bar import MenuBar
+import time
 
 class MainWindow(Tk):
     def __init__(self, servers, clients, others={}):
@@ -29,6 +30,7 @@ class MainWindow(Tk):
         self.menu.registerOtherItems("停止全部进程", self._onStopControler)
         if "quick_launch_servers" in self.others:
             self.menu.registerOtherItems("服务器一键启动", self._onQuickLaunchServers)
+        self.menu.registerOtherItems("启动全部客户端", self._onQuickLaunchClients)
         self.menu.registerBuilderCallback(self._onClickServerBuilders)
         self.menu.registerClientsCallback(self._onClickClients)
         self.menu.registerServersCallback(self._onClickServers)
@@ -98,3 +100,10 @@ class MainWindow(Tk):
             if self.menu.serversMenu.getServerButtonStatus(serverName) == "selected":
                 self.menu.serversMenu.clickServer(serverName)
             self.menu.serversMenu.clickServer(serverName)
+
+    def _onQuickLaunchClients(self):
+        for client in self.clients:
+            if self.menu.clientsMenu.getClientsButtonStatus(client) == "selected":
+                self.menu.clientsMenu.clickClient(client)
+            self.menu.clientsMenu.clickClient(client)
+            time.sleep(2)
