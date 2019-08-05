@@ -5,9 +5,9 @@ from .menus.menu_bar import MenuBar
 import time
 
 class MainWindow(Tk):
-    def __init__(self, servers, clients, others={}):
+    def __init__(self, title, servers, clients, others={}):
         Tk.__init__(self)
-        self.title("同城游 管理工具")
+        self.title(title)
         self.iconbitmap("res/head.ico")
         self.servers = servers
         self.clients = clients

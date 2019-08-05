@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<TCYEndManager>
+<TCYEndManager title="逮狗腿">
    <servers>
     <instances>
       <chunkserver exe_file="D:\chunk_server_pc_mobile\lagtchunksvr\Debug\LaGtChunkSvrDC.exe" is_window_expected="yes"></chunkserver>

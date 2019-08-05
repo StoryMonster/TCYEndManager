@@ -37,7 +37,7 @@ class ConfigFileParser(object):
 
     def parse(self):
         try:
-            config = {"servers":{}, "clients":{}, "others":{}}
+            config = {"servers":{}, "clients":{}, "others":{}, "title": self.root.attrib["title"]}
             self._parse_server_related_configuration(config["servers"], config["others"])
             self._parse_client_related_configuration(config["clients"], config["others"])
             return config
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     assert(os.path.isdir(args.log_dir))
     config = ConfigFileParser(args.config_file).parse()
     config["others"]["logdir"] = os.path.abspath(args.log_dir)
-    view = MainWindow(config["servers"], config["clients"], config["others"])
+    view = MainWindow(config["title"], config["servers"], config["clients"], config["others"])
     controler = Controler(config["servers"], config["clients"], config["others"])
     view.loadControler(controler)
     controler.loadView(view)
