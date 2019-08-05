@@ -55,8 +55,8 @@ class ServerManager(object):
             exefile = exefile if "\\" not in exefile else exefile[exefile.rfind("\\")+1:]
             for proc in process_iter():
                 if proc.name() == exefile:
-                    self.logWnd.error("系统中存在{}正在执行，请手动杀死该进程(pid: {})".format(exefile, proc.pid))
-                    return False
+                    self.logWnd.warn("系统中存在{}正在执行，请确认(pid: {})".format(exefile, proc.pid))
+                    return True
             return True
         except ImportError:
             self.logWnd.warn("psutil包不存在，将不会检查是否已经有该程序在执行。可在控制台执行pip install psutil安装")
